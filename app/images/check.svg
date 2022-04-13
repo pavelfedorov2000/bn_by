@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="84" height="84" viewBox="0 0 84 84">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Ellipse_2" data-name="Ellipse 2" cx="42" cy="42" r="42" transform="translate(918 347)" stroke="#000" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Check" transform="translate(-918 -347)" clip-path="url(#clip-path)">
+    <g id="checked" transform="translate(918 347)">
+      <circle id="Ellipse_3" data-name="Ellipse 3" cx="42" cy="42" r="42" transform="translate(0 0)" fill="#00c4b3"/>
+      <path id="Path_57" data-name="Path 57" d="M31.268,60.946l21.6,21.6A41.972,41.972,0,0,0,84,42V40.808L67.041,25.174Z" fill="#00a294"/>
+      <g id="Group_278" data-name="Group 278">
+        <path id="Path_58" data-name="Path 58" d="M43.06,51.407a4.961,4.961,0,0,1,0,6.89l-3.842,3.842a4.961,4.961,0,0,1-6.89,0L15.5,45.18a4.961,4.961,0,0,1,0-6.89l3.842-3.842a4.961,4.961,0,0,1,6.89,0Z" fill="#fff"/>
+        <path id="Path_59" data-name="Path 59" d="M57.767,22.126a4.961,4.961,0,0,1,6.89,0L68.5,25.968a4.961,4.961,0,0,1,0,6.89L39.35,61.874a4.961,4.961,0,0,1-6.89,0l-3.842-3.842a4.961,4.961,0,0,1,0-6.89Z" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

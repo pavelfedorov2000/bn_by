@@ -1,8 +1,11 @@
 label.error {
-    @extend %text-12;
-    color: red;
+    display: none !important;
 }
 
 .input.error {
-    border-color: red;
+    border-color: #ec2b59;
+    &:active,
+    &:focus {
+        box-shadow: 0px 0px 6px #ec2b5929;
+    }
 }

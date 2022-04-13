@@ -1,0 +1,183 @@
+<fieldset class="form__fieldset">
+	<legend class="form__legend form__legend--drop">
+		@@title
+	</legend>
+	<div class="form__drop-items">
+		<label class="form__field">
+			<div class="form__label">Индекс</div>
+			<input class="input" name="index">
+		</label>
+		<label class="form__field">
+			<div class="form__label">Область</div>
+			<div class="select">
+				<div class="select__title">Выберите область</div>
+				<div class="select__content">
+					<div class="select__content-inner">
+						<input id="region0" class="select__input" type="radio" name="region" checked />
+						<label for="region0" tabindex="0" class="select__label" data-value="Выберите область">
+							<span>Выберите область</span>
+						</label>
+						<input id="region1" class="select__input" type="radio" name="region" />
+						<label for="region1" tabindex="0" class="select__label" data-value="Область 1">
+							<span>Область 1</span>
+						</label>
+						<input id="region2" class="select__input" type="radio" name="region" />
+						<label for="region2" tabindex="0" class="select__label" data-value="Область 2">
+							<span>Область 2</span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</label>
+		<label class="form__field">
+			<div class="form__label">Тип населенного пункта</div>
+			<div class="select">
+				<div class="select__title">Выберите тип населенного пункта</div>
+				<div class="select__content">
+					<div class="select__content-inner">
+						<input id="localityType0" class="select__input" type="radio" name="localityType" checked />
+						<label for="localityType0" tabindex="0" class="select__label"
+							data-value="Выберите тип населенного пункта">
+							<span>Выберите тип населенного пункта</span>
+						</label>
+						<input id="localityType1" class="select__input" type="radio" name="localityType" />
+						<label for="localityType1" tabindex="0" class="select__label"
+							data-value="Тип населенного пункта 1">
+							<span>Тип населенного пункта 1</span>
+						</label>
+						<input id="localityType2" class="select__input" type="radio" name="localityType" />
+						<label for="localityType2" tabindex="0" class="select__label"
+							data-value="Тип населенного пункта 2">
+							<span>Тип населенного пункта 2</span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</label>
+		<label class="form__field">
+			<div class="form__label">Населенный пункт</div>
+			<div class="select">
+				<div class="select__title">Выберите населенный пункт</div>
+				<div class="select__content">
+					<input class="input select__search" type="text"
+						placeholder="Введите название населенного пункта...">
+					<div class="select__content-inner">
+						<input id="locality0" class="select__input" type="radio" name="locality" checked />
+						<label for="locality0" tabindex="0" class="select__label"
+							data-value="Выберите населенный пункт">
+							<span>Выберите населенный пункт</span>
+						</label>
+						<input id="locality1" class="select__input" type="radio" name="locality" />
+						<label for="locality1" tabindex="0" class="select__label" data-value="Населенный пункт 1">
+							<span>Населенный пункт 1</span>
+						</label>
+						<input id="locality2" class="select__input" type="radio" name="locality" />
+						<label for="locality2" tabindex="0" class="select__label" data-value="Населенный пункт 2">
+							<span>Населенный пункт 2</span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</label>
+		<label class="form__field">
+			<div class="form__label">Тип улицы</div>
+			<div class="select">
+				<div class="select__title">Выберите тип улицы</div>
+				<div class="select__content">
+					<div class="select__content-inner">
+						<input id="streetType0" class="select__input" type="radio" name="streetType" checked />
+						<label for="streetType0" tabindex="0" class="select__label" data-value="Выберите тип улицы">
+							<span>Выберите тип улицы</span>
+						</label>
+						<input id="streetType1" class="select__input" type="radio" name="streetType" />
+						<label for="streetType1" tabindex="0" class="select__label" data-value="Тип улицы 1">
+							<span>Тип улицы 1</span>
+						</label>
+						<input id="streetType2" class="select__input" type="radio" name="streetType" />
+						<label for="streetType2" tabindex="0" class="select__label" data-value="Тип улицы 2">
+							<span>Тип улицы 2</span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</label>
+		<div class="form__field">
+			<div class="form__label">Улица</div>
+			<div class="select">
+				<div class="select__title">Выберите улицу</div>
+				<div class="select__content">
+					<input class="input select__search" type="text" placeholder="Введите название улицы...">
+					<div class="select__content-inner">
+						<input id="street0" class="select__input" type="radio" name="street" checked />
+						<label for="street0" tabindex="0" class="select__label" data-value="Выберите улицу">
+							<span>Выберите улицу</span>
+						</label>
+						<input id="street1" class="select__input" type="radio" name="street" />
+						<label for="street1" tabindex="0" class="select__label" data-value="Улица 1">
+							<span>Улица 1</span>
+						</label>
+						<input id="street2" class="select__input" type="radio" name="street" />
+						<label for="street2" tabindex="0" class="select__label" data-value="Улица 2">
+							<span>Улица 2</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<label class="form__check form__check--align-center">
+				<input class="check-box" type="checkbox" name="missing_street">
+				<span class="check-style"></span>
+				<span class="check-content">
+					В адресе отсутствует название улицы
+				</span>
+			</label>
+		</div>
+		<div class="form__fields">
+			<label>
+				<div class="form__label">Дом</div>
+				<input class="input" name="home" placeholder="51В">
+			</label>
+			<label>
+				<div class="form__label">Корпус / Строение</div>
+				<input class="input" name="corpus" placeholder="1">
+			</label>
+		</div>
+		<label class="form__field">
+			<div class="form__label">Тип помещения</div>
+			<div class="select">
+				<div class="select__title">Выберите тип помещения</div>
+				<div class="select__content">
+					<div class="select__content-inner">
+						<input id="roomType0" class="select__input" type="radio" name="room_type" checked />
+						<label for="roomType0" tabindex="0" class="select__label" data-value="Выберите тип помещения">
+							<span>Выберите тип помещения</span>
+						</label>
+						<input id="roomType1" class="select__input" type="radio" name="room_type" />
+						<label for="roomType1" tabindex="0" class="select__label" data-value="Офис">
+							<span>Офис</span>
+						</label>
+						<input id="roomType2" class="select__input" type="radio" name="room_type" />
+						<label for="roomType2" tabindex="0" class="select__label" data-value="Квартира">
+							<span>Квартира</span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</label>
+		<label class="form__field">
+			<div class="form__label">Помещение</div>
+			<input class="input" name="room" placeholder="196">
+			<label class="form__check form__check--align-center">
+				<input class="check-box" type="checkbox" name="single_structure">
+				<span class="check-style"></span>
+				<span class="check-content">
+					Это единое строение, помещения нет
+				</span>
+			</label>
+		</label>
+		<label class="form__field">
+			<div class="form__label">Комментарий по адресу</div>
+			<textarea class="input textarea" name="address_comment"
+				placeholder="Например: 3 этаж, справа от входа"></textarea>
+		</label>
+	</div>
+</fieldset>

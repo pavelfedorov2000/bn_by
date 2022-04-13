@@ -1,97 +1,126 @@
-// Only arrow styling
-.select {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	background-image: url(../img/select-drop.svg);
-	background-position: calc(100% - 20px) 50%;
-	background-repeat: no-repeat;
-}
-
 // Custom select
 .select {
-	position: relative;
-	@extend %text-14;
+    position: relative;
 
-	&[data-state="active"] {
-		.select {
-			&__title {
+    &__title {
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 14px 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: 0.3s all;
+        @media (max-width: 575px) {
+            font-size: 14px;
+            line-height: 19px;
+            padding: 13.5px 14px;
+        }
+        span.tariff-price {
+            opacity: 0.5;
+            margin-left: 20px;
+        }
 
-				&::after {
-					transform: rotate(180deg);
-				}
-			}
+        &::after {
+            content: '';
+            position: absolute;
+            top: 17px;
+            right: 20px;
+            z-index: 20;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #ddd;
+            border-left: none;
+            border-top: none;
+            transform: rotate(45deg);
+            transition: all 0.3s;
+        }
 
-			&__content {
-				opacity: 1;
-				pointer-events: all;
-			}
-		}
-	}
+        &.focus {
+            box-shadow: 0px 0px 6px #00c4b329;
+            border-color: #00c4b3;
+        }
 
-	&__title {
-		@extend %vertical-align;
-		height: 4.7rem;
-		padding-left: 2rem;
-		padding-right: 5rem;
-		background-color: #FFF;
-		border: 0.1rem solid #000;
-		cursor: pointer;
+        &.active {
+            font-weight: 600;
+            color: #13284a;
+        }
+        @media (any-hover: hover) {
+            &:hover {
+                border-color: #9ee2dc;
+                &:after {
+                    border-color: #606060;
+                }
+            }
+        }
+    }
 
-		&::after {
-			content: "";
-			position: absolute;
-			top: calc(50% - 0.7rem / 2);
-			right: 1.8rem;
-			width: 1rem;
-			height: 0.7rem;
-			background-color: #000;
-			clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-			transition: all 0.3s ease-out;
-		}
-	}
+    &__search {
+        &:not(:last-child) {
+            margin-bottom: 15px;
+        }
+    }
 
-	&__content {
-		position: absolute;
-		top: 4.7rem;
-		left: 0;
-		right: 0;
-		@extend %flex-col;
-		width: 100%;
-		border: 0.1rem solid #000;
-		border-top: none;
-		transition: all 0.3s ease-out;
-		opacity: 0;
-		z-index: 30;
-		background-color: #fff;
-		pointer-events: none;
-	}
+    &__content {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        transition: all 0.3s ease-out;
+        z-index: 30;
+        background-color: #fff;
+        padding: 14px 7px;
+    }
 
-	&__input {
-		display: none;
+    &__content-inner {
+        max-height: 330px;
+        overflow-y: auto;
+        padding-right: 3px;
+        &::-webkit-scrollbar {
+            width: 3px;
+            height: 100%;
+            border-radius: 20px;
+            background-color: #f5f5f5;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $accent;
+            border-radius: 20px;
+        }
+    }
 
-		&:checked+label {
-			background-color: $accent;
-			color: #fff;
-		}
-	}
+    &__input {
+        display: none;
 
-	&__label {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		cursor: pointer;
-		overflow: hidden;
-		padding: 1rem 1.4rem;
+        &:checked + label {
+            background-color: #f5f5f5;
+        }
+    }
 
-		@media(max-width: 500px) {
-			padding: 0.7rem;
-		}
-
-		@media (any-hover: hover) {
-			&:hover {
-				background-color: $accent;
-				color: #fff;
-			}
-		}
-	}
+    &__label {
+        display: block;
+        width: 100%;
+        cursor: pointer;
+        overflow: hidden;
+        padding: 10px 23px 10px 13px;
+        transition: 0.3s all;
+        color: rgba(#13284a, 0.7);
+        @media (any-hover: hover) {
+            &:hover {
+                background: #f5f5f5;
+            }
+        }
+        span {
+            display: block;
+            color: #13284a;
+            text-transform: uppercase;
+            &:not(:last-child) {
+                margin-bottom: 6px;
+            }
+        }
+    }
 }

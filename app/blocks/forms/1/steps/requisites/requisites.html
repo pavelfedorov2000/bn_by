@@ -1,0 +1,44 @@
+<fieldset class="form__fieldset">
+	<legend class="form__legend">
+		Реквизиты компании
+	</legend>
+	<label class="form__field">
+		<div class="form__label">Юридическое наименование организации</div>
+		<input class="input" name="company_name">
+	</label>
+	<div class="form__field">
+		<div class="form__label">
+			Организационная форма
+		</div>
+		<div class="select">
+			<div class="select__title">Выберите организационную форму</div>
+			<div class="select__content">
+				<div class="select__content-inner">
+					<input id="organizationalForm0" class="select__input" type="radio" name="organizational_form"
+						checked />
+					<label for="organizationalForm0" tabindex="0" class="select__label"
+						data-value="Выберите организационную форму">
+						<span>Выберите организационную форму</span>
+					</label>
+					<input id="organizationalForm1" class="select__input" type="radio" name="organizational_form" />
+					<label for="organizationalForm1" tabindex="0" class="select__label"
+						data-value="Общество с ограниченной ответственностью">
+						<span>Общество с ограниченной ответственностью</span>
+					</label>
+					<input id="organizationalForm2" class="select__input" type="radio" name="organizational_form" />
+					<label for="organizationalForm2" tabindex="0" class="select__label" data-value="lorem">
+						<span>lorem</span>
+					</label>
+					<input id="organizationalForm3" class="select__input" type="radio" name="organizational_form" />
+					<label for="organizationalForm3" tabindex="0" class="select__label" data-value="ipsum">
+						<span>ipsum</span>
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<label class="form__field">
+		<div class="form__label">УНП</div>
+		<input class="input" name="unp">
+	</label>
+</fieldset>

@@ -1,0 +1,76 @@
+<div class="form__step">
+	<fieldset class="form__fieldset">
+		<legend class="form__legend">
+			Тарифный план
+		</legend>
+		<div class="form__field">
+			<div class="form__label">
+				Выберите тарифный план
+			</div>
+			<div class="select select--price">
+				<div class="select__title">
+					<span class="tariff-name">Выберите тарифный план</span>
+					<span class="tariff-price"></span>
+				</div>
+				<div class="select__content">
+					<div class="select__content-inner">
+						<input id="tariff0" class="select__input" type="radio" name="tariff" checked />
+						<label for="tariff0" tabindex="0" class="select__label">
+							<span data-tariff-name="Выберите тарифный план">Выберите тарифный план</span>
+							<span data-tariff-price></span>
+						</label>
+						<input id="tariff1" class="select__input" type="radio" name="tariff" />
+						<label for="tariff1" tabindex="0" class="select__label">
+							<span data-tariff-name="iDOM100+Megogo">iDOM100+Megogo</span>
+							<span data-tariff-price="25,50 руб./мес.">25,50 руб./мес.</span>
+						</label>
+						<input id="tariff2" class="select__input" type="radio" name="tariff" />
+						<label for="tariff2" tabindex="0" class="select__label">
+							<span data-tariff-name="Мой бизнес PRO 100">Мой бизнес PRO 100</span>
+							<span data-tariff-price="43 руб./мес.">43 руб./мес.</span>
+						</label>
+						<input id="tariff3" class="select__input" type="radio" name="tariff" />
+						<label for="tariff3" tabindex="0" class="select__label">
+							<span data-tariff-name="Мой бизнес PRO 100">Мой бизнес PRO 80</span>
+							<span data-tariff-price="25,50 руб./мес.">25,50 руб./мес.</span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset class="form__fieldset">
+		<legend class="form__legend">
+			Дополнительные услуги
+		</legend>
+		<div class="form__checks">
+			<label class="form__check">
+				<input class="check-box" type="checkbox" name="additional_service">
+				<span class="check-style"></span>
+				<div class="check-title">
+					<span>Маршрутизатор (Роутер)</span>
+					<span>0р. /Мес.</span>
+				</div>
+				<div class="check-text">
+					Сетевое оборудование будет подобрано под ваши потребности. Ряд моделей доступны за
+					дополнительную плату.
+				</div>
+			</label>
+			<label class="form__check">
+				<input class="check-box" type="checkbox" name="additional_service">
+				<span class="check-style"></span>
+				<div class="check-title">
+					<span>Статический IP-адрес</span>
+					<span>4,20 руб./мес.</span>
+				</div>
+				<div class="check-text">
+					Позволяет присвоить абоненту постоянный IP-адрес. Для выхода в интернет этот адрес не
+					используется.
+				</div>
+			</label>
+		</div>
+	</fieldset>
+	@@include("blocks/forms/address.html", {
+	"title": "Адрес подключения"
+	})
+</div>

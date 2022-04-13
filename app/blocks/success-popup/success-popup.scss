@@ -1,0 +1,60 @@
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, 0.7);
+}
+.success-popup {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 397px;
+    padding: 35px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    @media (max-width: 575px) {
+        width: calc(100% - 15px * 2);
+    }
+    // .success-popup__icon
+
+    &__icon {
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        margin-bottom: 40px;
+    }
+
+    // .success-popup__title
+
+    &__title {
+        font-size: 21px;
+        line-height: 28px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    // .success-popup__text
+
+    &__text {
+        font-size: 14px;
+        line-height: 19px;
+        margin-bottom: 40px;
+    }
+
+    &__btn {
+        padding-left: 59px;
+        padding-right: 59px;
+    }
+}

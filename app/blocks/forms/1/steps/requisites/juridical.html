@@ -1,0 +1,209 @@
+<fieldset class="form__fieldset">
+	<legend class="form__legend form__legend--drop">
+		Юридический адрес
+	</legend>
+	<div class="form__drop-items">
+		<label class="form__check form__check--align-center">
+			<input class="check-box" type="checkbox" name="matches_address">
+			<span class="check-style"></span>
+			<span class="check-content">
+				Совпадает с адресом подключения
+			</span>
+		</label>
+		<div class="form__hidden-items">
+			<label class="form__field">
+				<div class="form__label">Индекс</div>
+				<input class="input" name="index">
+			</label>
+			<label class="form__field">
+				<div class="form__label">Область</div>
+				<div class="select">
+					<div class="select__title">Выберите Область</div>
+					<div class="select__content">
+						<div class="select__content-inner">
+							<input id="juridicalRegion0" class="select__input" type="radio" name="juridical_region"
+								checked />
+							<label for="juridicalRegion0" tabindex="0" class="select__label"
+								data-value="Выберите Область">
+								<span>Выберите Область</span>
+							</label>
+							<input id="juridicalRegion1" class="select__input" type="radio" name="juridical_region" />
+							<label for="juridicalRegion1" tabindex="0" class="select__label" data-value="Область 1">
+								<span>Область 1</span>
+							</label>
+							<input id="juridicalRegion2" class="select__input" type="radio" name="juridical_region" />
+							<label for="juridicalRegion2" tabindex="0" class="select__label" data-value="Область 2">
+								<span>Область 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<label class="form__field">
+				<div class="form__label">Тип населенного пункта</div>
+				<div class="select">
+					<div class="select__title">Выберите тип населенного пункта</div>
+					<div class="select__content">
+						<div class="select__content-inner">
+							<input id="juridicalLocalityType0" class="select__input" type="radio"
+								name="juridical_locality_type" checked />
+							<label for="juridicalLocalityType0" tabindex="0" class="select__label"
+								data-value="Выберите тип населенного пункта">
+								<span>Выберите тип населенного пункта</span>
+							</label>
+							<input id="juridicalLocalityType1" class="select__input" type="radio"
+								name="juridical_locality_type" />
+							<label for="juridicalLocalityType1" tabindex="0" class="select__label"
+								data-value="Тип населенного пункта 1">
+								<span>Тип населенного пункта 1</span>
+							</label>
+							<input id="juridicalLocalityType2" class="select__input" type="radio"
+								name="juridical_locality_type" />
+							<label for="juridicalLocalityType2" tabindex="0" class="select__label"
+								data-value="Тип населенного пункта 2">
+								<span>Тип населенного пункта 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<label class="form__field">
+				<div class="form__label">Населенный пункт</div>
+				<div class="select">
+					<div class="select__title">Выберите населенный пункт</div>
+					<div class="select__content">
+						<input class="input select__search" type="text"
+							placeholder="Введите название населенного пункта...">
+						<div class="select__content-inner">
+							<input id="juridicalLocality0" class="select__input" type="radio" name="juridical_locality"
+								checked />
+							<label for="juridicalLocality0" tabindex="0" class="select__label"
+								data-value="Выберите населенный пункт">
+								<span>Выберите населенный пункт</span>
+							</label>
+							<input id="juridicalLocality1" class="select__input" type="radio"
+								name="juridical_locality" />
+							<label for="juridicalLocality1" tabindex="0" class="select__label"
+								data-value="Населенный пункт 1">
+								<span>Населенный пункт 1</span>
+							</label>
+							<input id="juridicalLocality2" class="select__input" type="radio"
+								name="juridical_locality" />
+							<label for="juridicalLocality2" tabindex="0" class="select__label"
+								data-value="Населенный пункт 2">
+								<span>Населенный пункт 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<label class="form__field">
+				<div class="form__label">Тип улицы</div>
+				<div class="select">
+					<div class="select__title">Выберите тип улицы</div>
+					<div class="select__content">
+						<div class="select__content-inner">
+							<input id="juridicalStreetType0" class="select__input" type="radio"
+								name="juridical_street_type" checked />
+							<label for="juridicalStreetType0" tabindex="0" class="select__label"
+								data-value="Выберите тип улицы">
+								<span>Выберите тип улицы</span>
+							</label>
+							<input id="juridicalStreetType1" class="select__input" type="radio"
+								name="juridical_street_type" />
+							<label for="juridicalStreetType1" tabindex="0" class="select__label"
+								data-value="Тип улицы 1">
+								<span>Тип улицы 1</span>
+							</label>
+							<input id="juridicalStreetType2" class="select__input" type="radio"
+								name="juridical_street_type" />
+							<label for="juridicalStreetType2" tabindex="0" class="select__label"
+								data-value="Тип улицы 2">
+								<span>Тип улицы 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<div class="form__field">
+				<div class="form__label">Улица</div>
+				<div class="select">
+					<div class="select__title">Выберите улицу</div>
+					<div class="select__content">
+						<input class="input select__search" type="text" placeholder="Введите название улицы...">
+						<div class="select__content-inner">
+							<input id="juridicalStreet0" class="select__input" type="radio" name="juridical_street"
+								checked />
+							<label for="juridicalStreet0" tabindex="0" class="select__label"
+								data-value="Выберите улицу">
+								<span>Выберите улицу</span>
+							</label>
+							<input id="juridicalStreet1" class="select__input" type="radio" name="juridical_street" />
+							<label for="juridicalStreet1" tabindex="0" class="select__label" data-value="Улица 1">
+								<span>Улица 1</span>
+							</label>
+							<input id="juridicalStreet2" class="select__input" type="radio" name="juridical_street" />
+							<label for="juridicalStreet2" tabindex="0" class="select__label" data-value="Улица 2">
+								<span>Улица 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<label class="form__check form__check--align-center">
+					<input class="check-box" type="checkbox" name="missing_street">
+					<span class="check-style"></span>
+					<span class="check-content">
+						В адресе отсутствует название улицы
+					</span>
+				</label>
+			</div>
+			<div class="form__fields">
+				<label>
+					<div class="form__label">Дом</div>
+					<input class="input" name="home" placeholder="51В">
+				</label>
+				<label>
+					<div class="form__label">Корпус / Строение</div>
+					<input class="input" name="juridical_corpus" placeholder="1">
+				</label>
+			</div>
+			<label class="form__field">
+				<div class="form__label">Тип помещения</div>
+				<div class="select">
+					<div class="select__title">Выберите тип помещения</div>
+					<div class="select__content">
+						<div class="select__content-inner">
+							<input id="juridicalRoomType0" class="select__input" type="radio" name="juridical_room_type"
+								checked />
+							<label for="juridicalRoomType0" tabindex="0" class="select__label"
+								data-value="Выберите тип помещения">
+								<span>Выберите тип помещения</span>
+							</label>
+							<input id="juridicalRoomType1" class="select__input" type="radio"
+								name="juridical_room_type" />
+							<label for="juridicalRoomType1" tabindex="0" class="select__label" data-value="Квартира">
+								<span>Квартира</span>
+							</label>
+							<input id="juridicalRoomType2" class="select__input" type="radio"
+								name="juridical_room_type" />
+							<label for="juridicalRoomType2" tabindex="0" class="select__label" data-value="Офис">
+								<span>Офис</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<label class="form__field">
+				<div class="form__label">Помещение</div>
+				<input class="input" name="room" placeholder="196">
+				<label class="form__check form__check--align-center">
+					<input class="check-box" type="checkbox" name="single_structure">
+					<span class="check-style"></span>
+					<span class="check-content">
+						Это единое строение, помещения нет
+					</span>
+				</label>
+			</label>
+		</div>
+	</div>
+</fieldset>

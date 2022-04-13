@@ -1,0 +1,59 @@
+@@include("blocks/head/head.html", {"title": "Форма"})
+<div class="wrapper">
+	<main class="page">
+		<form id="juridical_form" action="#" class="form-page">
+			<div class="steps">
+				<div class="_container">
+					<div class="form-page__inner">
+						<div class="form-page__aside">
+							<h1 class="form-page__title">Заявление на подключение</h1>
+							@@include("blocks/forms/1/aside-text.html")
+							@@include("blocks/forms/help.html", {
+							"block": "form-page__aside-help"
+							})
+						</div>
+						<div class="form-page__content">
+							@@include("blocks/forms/1/nav.html")
+							@@include("blocks/forms/1/aside-text.html")
+							<div class="form__body">
+								@@include("blocks/forms/1/steps/contacts.html")
+								@@include("blocks/forms/1/steps/order.html")
+								@@include("blocks/forms/1/steps/requisites.html")
+							</div>
+
+							<div class="form__buttons">
+								<button class="btn back-btn btn--border" type="button">Назад</button>
+								<button class="btn next-btn" type="button">Продолжить</button>
+							</div>
+						</div>
+						@@include("blocks/forms/help.html", {
+						"block": "form-page__bottom-help"
+						})
+					</div>
+				</div>
+			</div>
+			@@include("blocks/forms/result.html")
+		</form>
+	</main>
+	@@include("blocks/success-popup/success-popup.html")
+</div>
+@@include("blocks/link/link.html")
+<script>
+	$('#juridical_form').on('submit', function (e, data) {
+		e.preventDefault();
+
+		$.ajax({
+			type: "POST",
+			url: "",
+			data: data, // data - объект
+		});
+		localStorage.clear(); // чистим хранилище
+		$('.overlay').fadeIn('slow');
+		$('.success-popup').fadeIn('slow');
+		$('.input').val('');
+		$('.select__title').removeClass('active');
+		$('input[type=checkbox]').prop('checked', false); // убираем галки
+		return false;
+	});
+
+</script>

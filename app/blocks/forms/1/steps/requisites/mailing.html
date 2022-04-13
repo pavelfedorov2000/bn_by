@@ -1,0 +1,223 @@
+<fieldset class="form__fieldset">
+	<legend class="form__legend form__legend--drop">
+		Почтовый адрес
+	</legend>
+	<div class="form__drop-items">
+		<label class="form__field">
+			<div class="form__label">Почтовый адрес совпадает</div>
+			<div class="select">
+				<div class="select__title">Выберите</div>
+				<div class="select__content">
+					<div class="select__content-inner">
+						<input id="addressMatches0" class="select__input" type="radio" name="mailing_address_matches"
+							checked />
+						<label for="addressMatches0" tabindex="0" class="select__label" data-value="Выберите">
+							<span>Выберите</span>
+						</label>
+						<input id="addressMatches1" class="select__input" type="radio" name="mailing_address_matches" />
+						<label for="addressMatches1" tabindex="0" class="select__label"
+							data-value="с юридическим адресом">
+							<span>с юридическим адресом</span>
+						</label>
+						<input id="addressMatches1" class="select__input" type="radio" name="mailing_address_matches" />
+						<label for="addressMatches1" tabindex="0" class="select__label"
+							data-value="с адресом подключения">
+							<span>с адресом подключения</span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</label>
+		<div class="form__hidden-items">
+			<label class="form__field">
+				<div class="form__label">Индекс</div>
+				<input class="input" name="mailing_index">
+			</label>
+			<label class="form__field">
+				<div class="form__label">Абонентский ящик</div>
+				<input class="input" name="subscriber_box" placeholder="00000">
+			</label>
+			<label class="form__field">
+				<div class="form__label">Область</div>
+				<div class="select">
+					<div class="select__title">Выберите область</div>
+					<div class="select__content">
+						<div class="select__content-inner">
+							<input id="mailingRegion0" class="select__input" type="radio" name="mailing_region"
+								checked />
+							<label for="mailingRegion0" tabindex="0" class="select__label"
+								data-value="Выберите область">
+								<span>Выберите область</span>
+							</label>
+							<input id="mailingRegion1" class="select__input" type="radio" name="mailing_region" />
+							<label for="mailingRegion1" tabindex="0" class="select__label" data-value="Область 1">
+								<span>Область 1</span>
+							</label>
+							<input id="mailingRegion2" class="select__input" type="radio" name="mailing_region" />
+							<label for="mailingRegion2" tabindex="0" class="select__label" data-value="Область 2">
+								<span>Область 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<label class="form__field">
+				<div class="form__label">Тип населенного пункта</div>
+				<div class="select">
+					<div class="select__title">Выберите тип населенного пункта</div>
+					<div class="select__content">
+						<div class="select__content-inner">
+							<input id="mailingLocalityType0" class="select__input" type="radio"
+								name="mailing_locality_type" checked />
+							<label for="mailingLocalityType0" tabindex="0" class="select__label"
+								data-value="Выберите тип населенного пункта">
+								<span>Выберите тип населенного пункта</span>
+							</label>
+							<input id="mailingLocalityType1" class="select__input" type="radio"
+								name="mailing_locality_type" />
+							<label for="mailingLocalityType1" tabindex="0" class="select__label"
+								data-value="Тип населенного пункта 1">
+								<span>Тип населенного пункта 1</span>
+							</label>
+							<input id="mailingLocalityType2" class="select__input" type="radio"
+								name="mailing_locality_type" />
+							<label for="mailingLocalityType2" tabindex="0" class="select__label"
+								data-value="Тип населенного пункта 2">
+								<span>Тип населенного пункта 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<label class="form__field">
+				<div class="form__label">Населенный пункт</div>
+				<div class="select">
+					<div class="select__title">Выберите населенный пункт</div>
+					<div class="select__content">
+						<input class="input select__search" type="text"
+							placeholder="Введите название населенного пункта...">
+						<div class="select__content-inner">
+							<input id="mailingLocality0" class="select__input" type="radio" name="mailing_locality"
+								checked />
+							<label for="mailingLocality0" tabindex="0" class="select__label"
+								data-value="Выберите населенный пункт">
+								<span>Выберите населенный пункт</span>
+							</label>
+							<input id="mailingLocality1" class="select__input" type="radio" name="mailing_locality" />
+							<label for="mailingLocality1" tabindex="0" class="select__label"
+								data-value="Населенный пункт 1">
+								<span>Населенный пункт 1</span>
+							</label>
+							<input id="mailingLocality2" class="select__input" type="radio" name="mailing_locality" />
+							<label for="mailingLocality2" tabindex="0" class="select__label"
+								data-value="Населенный пункт 2">
+								<span>Населенный пункт 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<label class="form__field">
+				<div class="form__label">Тип улицы</div>
+				<div class="select">
+					<div class="select__title">Выберите тип улицы</div>
+					<div class="select__content">
+						<div class="select__content-inner">
+							<input id="mailingStreetType0" class="select__input" type="radio" name="mailing_street_type"
+								checked />
+							<label for="mailingStreetType0" tabindex="0" class="select__label"
+								data-value="Выберите тип улицы">
+								<span>Выберите тип улицы</span>
+							</label>
+							<input id="mailingStreetType1" class="select__input" type="radio"
+								name="mailing_street_type" />
+							<label for="mailingStreetType1" tabindex="0" class="select__label" data-value="Тип улицы 1">
+								<span>Тип улицы 1</span>
+							</label>
+							<input id="mailingStreetType2" class="select__input" type="radio"
+								name="mailing_street_type" />
+							<label for="mailingStreetType2" tabindex="0" class="select__label" data-value="Тип улицы 2">
+								<span>Тип улицы 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<div class="form__field">
+				<div class="form__label">Улица</div>
+				<div class="select">
+					<div class="select__title">Выберите улицу</div>
+					<div class="select__content">
+						<input class="input select__search" type="text" placeholder="Введите название улицы...">
+						<div class="select__content-inner">
+							<input id="mailingStreet0" class="select__input" type="radio" name="mailing_street"
+								checked />
+							<label for="mailingStreet0" tabindex="0" class="select__label" data-value="Выберите улицу">
+								<span>Выберите улицу</span>
+							</label>
+							<input id="mailingStreet1" class="select__input" type="radio" name="mailing_street" />
+							<label for="mailingStreet1" tabindex="0" class="select__label" data-value="Улица 1">
+								<span>Улица 1</span>
+							</label>
+							<input id="mailingStreet2" class="select__input" type="radio" name="mailing_street" />
+							<label for="mailingStreet2" tabindex="0" class="select__label" data-value="Улица 2">
+								<span>Улица 2</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<label class="form__check form__check--align-center">
+					<input class="check-box" type="checkbox" name="missing_street">
+					<span class="check-style"></span>
+					<span class="check-content">
+						В адресе отсутствует название улицы
+					</span>
+				</label>
+			</div>
+			<div class="form__fields">
+				<label>
+					<div class="form__label">Дом</div>
+					<input class="input" name="mailing_home" placeholder="51В">
+				</label>
+				<label>
+					<div class="form__label">Корпус / Строение</div>
+					<input class="input" name="mailing_corpus" placeholder="1">
+				</label>
+			</div>
+			<label class="form__field">
+				<div class="form__label">Тип помещения</div>
+				<div class="select">
+					<div class="select__title">Выберите тип помещения</div>
+					<div class="select__content">
+						<div class="select__content-inner">
+							<input id="mailingRoomType0" class="select__input" type="radio" name="street" checked />
+							<label for="mailingRoomType0" tabindex="0" class="select__label"
+								data-value="Выберите тип помещения">
+								<span>Выберите тип помещения</span>
+							</label>
+							<input id="mailingRoomType1" class="select__input" type="radio" name="street" />
+							<label for="mailingRoomType1" tabindex="0" class="select__label" data-value="Квартира">
+								<span>Квартира</span>
+							</label>
+							<input id="mailingRoomType2" class="select__input" type="radio" name="street" />
+							<label for="mailingRoomType2" tabindex="0" class="select__label" data-value="Офис">
+								<span>Офис</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</label>
+			<label class="form__field">
+				<div class="form__label">Помещение</div>
+				<input class="input" name="room" placeholder="196">
+			</label>
+			<label class="form__check form__check--align-center">
+				<input class="check-box" type="checkbox" name="single_structure">
+				<span class="check-style"></span>
+				<span class="check-content">
+					Это единое строение, помещения нет
+				</span>
+			</label>
+		</div>
+	</div>
+</fieldset>
