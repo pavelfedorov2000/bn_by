@@ -76,7 +76,15 @@ $(document).ready(function () {
   });
 
   // случай, когда заполняем на вкладке личные данные физ формы сначала все поля а телефон последним, чтобы кнопка загоралась зеленым
-  $('input[name=phone').on('change', function () {
+  $('.input').on('change', function () {
+    //!$(this).parents('label').siblings().find('.input').hasClass('error')
+    if ($(this).parents('form').valid()) {
+      $('.next-btn').prop('disabled', false);
+    } else {
+      $('.next-btn').prop('disabled', true);
+    }
+  });
+  $('.input[name=phone]').on('change', function () {
     if (!$(this).parents('label').siblings().find('.input').hasClass('error')) {
       if ($(this).val().length == 19) {
         $('.next-btn').prop('disabled', false);
@@ -119,15 +127,15 @@ $(document).ready(function () {
     $(this).next().slideToggle('300');
   });
 
-  $('.input').on('change', function () {
-    if (!$(this).parents('form').valid()) {
+  /* $('.input').on('change', function () {
+    if (!$(this).parents('form').valid() && !$('input[name=agree]').is(':checked')) {
       $('.next-btn').prop('disabled', true);
     } else {
       $('.next-btn').prop('disabled', false);
     }
-  });
+  }); */
 
-  let currentStep = 0;
+  let currentStep = localStorage.getItem('step') || 0;
   localStorage.setItem('step', currentStep);
   const navItems = document.querySelectorAll('.form__nav-btn');
   const stepItems = document.querySelectorAll('.form__step');
@@ -153,7 +161,7 @@ $(document).ready(function () {
       nextStep(1);
     }
   };
-  showStep(localStorage.getItem('step'));
+  showStep(currentStep);
 
   const nav = document.querySelector('.form__nav');
   const navWidth = nav.scrollWidth;
@@ -179,19 +187,21 @@ $(document).ready(function () {
         navScroll(btn, i);
         $('.form__nav-btn.active').removeClass('active');
         btn.classList.add('active');
+        currentStep = localStorage.getItem('step') || 0;
         stepItems[currentStep].style.display = "none";
         stepText.forEach(text => {
           text.querySelectorAll('div')[currentStep].style.display = "none";
         });
         currentStep = i;
         showStep(i);
+        localStorage.setItem('step', currentStep);
       } else {
         return false;
       }
     });
   });
 
-  stepItems[currentStep].querySelectorAll('.input').forEach(input => {
+  /* stepItems[currentStep].querySelectorAll('.input').forEach(input => {
     input.addEventListener('change', () => {
       if (!$('.form-page').valid()) {
         $('.next-btn').prop('disabled', true);
@@ -199,7 +209,7 @@ $(document).ready(function () {
         $('.next-btn').prop('disabled', false);
       }
     });
-  });
+  }); */
 
   window.addEventListener('resize', function () {
     if (currentStep == 0) {
@@ -250,7 +260,9 @@ $(document).ready(function () {
 
   $('input[name=agree]').on('change', function () {
     if ($(this).is(':checked')) {
-      $('.next-btn').prop('disabled', false);
+      if ($(this).parents('form').valid()) {
+        $('.next-btn').prop('disabled', false);
+      }
       localStorage.setItem('agree', true);
     } else {
       $('.next-btn').prop('disabled', true);
@@ -258,6 +270,7 @@ $(document).ready(function () {
   });
 
   function nextStep(n) {
+    currentStep = localStorage.getItem('step') || 0;
     stepItems[currentStep].style.display = "none";
     stepText.forEach(text => {
       text.querySelectorAll('div')[currentStep].style.display = "none";
@@ -273,6 +286,7 @@ $(document).ready(function () {
   }
 
   function prevStep(n) {
+    currentStep = localStorage.getItem('step');
     stepItems[currentStep].style.display = "none";
     stepText.forEach(text => {
       text.querySelectorAll('div')[currentStep].style.display = "none";
@@ -293,13 +307,14 @@ $(document).ready(function () {
     $('.form-result__content').empty(); // чистим контент, чтобы корректно работало
     $('.steps').show(); // показываем шаги
     currentStep = 0; // устанавливаем шаг в начальное значение
+    localStorage.setItem('step', currentStep);
     showStep(currentStep); // показываем первый шаг
     navScroll(document.querySelector('.form__nav-btn.active'), currentStep);
     $('input[name=agree]').prop('checked', false); // убираем галочку с поля согласия с обработкой персональных данных
     data = JSON.parse(localStorage.getItem("data"));
   });
 
-  $('.next-btn').on('click', function () {
+  /* $('.next-btn').on('click', function () {
     if ($(this).parents('form').attr('id') === 'physical_form') {
       document.querySelector('#physical_form').querySelectorAll('.form__step')[0].querySelectorAll('.input').forEach(input => {
         if (input.classList.contains('error')) {
@@ -307,11 +322,11 @@ $(document).ready(function () {
         }
       });
     }
-  });
+  }); */
 
 
   // Добавление данных в объект
-  let data = {};
+  let data = JSON.parse(localStorage.getItem("data")) || {};
   let checks = [];
 
   function clickInput(target) {
@@ -321,7 +336,11 @@ $(document).ready(function () {
       let key, value;
 
       if (target === '.input') {
-        key = $(this).prev().text();
+        if ($(this).attr('name') === 'responsible_surname') {
+          key = `${$(this).prev().text()} ответственного`;
+        } else {
+          key = $(this).prev().text();
+        }
         value = $(this).val();
         localStorage.setItem(key, value);
         data = {
@@ -330,7 +349,7 @@ $(document).ready(function () {
 
         data[stepName] = {
           ...data[stepName],
-          id: currentStep
+          id: Number(currentStep)
         };
 
         data[stepName][stepSubcategory] = {
@@ -369,7 +388,7 @@ $(document).ready(function () {
 
             data[stepName] = {
               ...data[stepName],
-              id: currentStep
+              id: Number(currentStep)
             };
             delete data[stepName][stepSubcategory];
             $(this).parent().parent().next().find('.select').each(function () {
@@ -391,7 +410,7 @@ $(document).ready(function () {
 
         data[stepName] = {
           ...data[stepName],
-          id: currentStep
+          id: Number(currentStep)
         };
 
         data[stepName][stepSubcategory] = {
@@ -406,14 +425,16 @@ $(document).ready(function () {
       if (target === '.radio-box') {
         key = $(this).parent().parent().prev().text().trim();
         value = $(this).next().text();
-        localStorage.setItem(key, value);
+        let storageVal = $(this).next().text() === 'Да' ? true : false;
+        console.log(storageVal);
+        localStorage.setItem(key, storageVal);
         data = {
           ...data,
         }
 
         data[stepName] = {
           ...data[stepName],
-          id: currentStep
+          id: Number(currentStep)
         };
 
         data[stepName][stepSubcategory] = {
@@ -424,6 +445,8 @@ $(document).ready(function () {
         // Гражданство
         if ($(this).attr('name') === 'resident' && $(this).next().text() === 'Да') {
           delete data[stepName][stepSubcategory]["Гражданство"];
+          delete data[stepName][stepSubcategory]["Есть ли у вас временная регистрация?"];
+          $('.radio-box[name=temporary_registration]').prop('checked', false);
           $('.select__input[name=nationality]:checked').prop('checked', false);
           $('.select__input[name=nationality]').first().prop('checked', true);
           $('.select__input[name=nationality]').first().parent().parent().prev().removeClass('active');
@@ -461,7 +484,7 @@ $(document).ready(function () {
           }
           data[stepName] = {
             ...data[stepName],
-            id: currentStep
+            id: Number(currentStep)
           };
           data[stepName][stepSubcategory] = [
             ...checks,
@@ -485,7 +508,7 @@ $(document).ready(function () {
           }
           data[stepName] = {
             ...data[stepName],
-            id: currentStep
+            id: Number(currentStep)
           };
           data[stepName][stepSubcategory] = {
             ...data[stepName][stepSubcategory],
@@ -512,7 +535,7 @@ $(document).ready(function () {
           }
           data[stepName] = {
             ...data[stepName],
-            id: currentStep,
+            id: Number(currentStep),
           };
           data[stepName][stepSubcategory] = {
             ...data[stepName][stepSubcategory],
@@ -751,28 +774,42 @@ $(document).ready(function () {
   clickInput('.check-box[name="missing_street"], .check-box[name="single_structure"]');
   clickInput('.check-box[name="matches_address"]');
 
-  function getStorageValues() {
-    for (let i = 0; i < localStorage.length; i++) {
-      let key = localStorage.key(i);
-      console.log(key);
-      /* if ($('.form__label').text() === key) {
-        $(this).next().val(localStorage.getItem(key));
-      } */
-      $(`.form__label:contains(${key})`).next().val(localStorage.getItem(key));
-      $(`.check-title:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
-      $(`.check-content:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
-      $(`.radio-style:contains(${localStorage.getItem(key)})`).prev().prop('checked', true);
-      $(`.form__check--align-center .check-content:contains(${localStorage.getItem(key)})`).prev().prev().prop('checked', true);
-      $(`.form__label:contains(${key})`).next().find('.select__title').addClass('active');
-      if ($(`.form__label:contains(${key})`).next().find('.select__title').children().length > 1) {
-        $(`.form__label:contains(${key})`).next().find('.select__title').children().first().text(localStorage.getItem(key).split(':')[0]);
-        $(`.form__label:contains(${key})`).next().find('.select__title').children().last().text(localStorage.getItem(key).split(':')[1]);
-      } else {
-        $(`.form__label:contains(${key})`).next().find('.select__title').text(localStorage.getItem(key));
-      }
+  $('.select__input[name=street').on('change', function () {
+    $(this).parents('.select').next().children().first().prop('checked', false);
+  });
 
-      if ($('.select__label').attr('data-value') === localStorage.getItem(key)) {
-        $(this).prev().prop('checked', true);
+  $('.check-box[name=missing_street]').on('change', function () {
+    if ($(this).is(':checked')) {
+      $(this).parent().prev().find('.select__input').text($(this).parent().prev().find('.select__input').first().next().attr('data-value'));
+      $(this).parent().prev().find('.select__input').prop('checked', false);
+      $(this).parent().prev().find('.select__input').first().prop('checked', false);
+    }
+  });
+
+  function getStorageValues() {
+    if (window.localStorage) {
+      for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        console.log(key);
+        if (key) {
+          $(`.check-title:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
+          $(`.check-content:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
+          //$(`.radio-style:contains(${localStorage.getItem(key)})`).prev().prop('checked', true);
+          $(`.form__label:contains(${key})`).next().find('.select__title').addClass('active');
+          if ($(`.form__label:contains(${key})`).next().find('.select__title').children().length > 1) {
+            $(`.form__label:contains(${key})`).next().find('.select__title').children().first().text(localStorage.getItem(key).split(':')[0]);
+            $(`.form__label:contains(${key})`).next().find('.select__title').children().last().text(localStorage.getItem(key).split(':')[1]);
+          } else {
+            $(`.form__label:contains(${key})`).next().find('.select__title').text(localStorage.getItem(key));
+          }
+          $(`.form__label:contains(${key})`).next().val(localStorage.getItem(key));
+          //$(`.form__label:contains(${key})`).next().find('.radio-box').prop('checked', localStorage.getItem(key));
+          $(`.form__label:contains(${key})`).next().next().find('.check-box').prop('checked', localStorage.getItem(key));
+
+          if ($('.select__label').attr('data-value') === localStorage.getItem(key)) {
+            $(this).prev().prop('checked', true);
+          }
+        }
       }
     }
   }
@@ -793,13 +830,12 @@ $(document).ready(function () {
   // проверка ну пустой объект
   function isEmpty(obj) {
     for (let key in obj) {
-      // если тело цикла начнет выполняться - значит в объекте есть свойства
       return false;
     }
     return true;
   }
 
-  console.log(Object.values(data));
+  //console.log(Object.values(data));
 
   // функция генерации результирующего блока с введенными данными
   function generateResult() {
@@ -813,6 +849,7 @@ $(document).ready(function () {
       }
     });
     let sections = Object.keys(sortedObj);
+    console.log(sections);
     let html = sections.map(section => {
       if (!isEmpty(data[section]) && Object.values(data[section]).some(obj => !isEmpty(obj))) {
         return `<div class="form-result-section">
@@ -868,5 +905,9 @@ $(document).ready(function () {
     $('.select__title').removeClass('active'); // убираем bold у заголовка селекта
     $('.form__legend--drop').removeClass('active');
     $('.select__input:checked').prop('checked', false);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   });
 });

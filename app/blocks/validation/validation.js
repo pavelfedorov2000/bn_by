@@ -53,7 +53,7 @@ app.validation = {
     $.validator.addMethod("greaterThan",
       function (value, element, params) {
         var startDate = $('.input[name=passport_from').val();
-        return Date.parse(startDate) <= Date.parse(value) || value == "";
+        return Date.parse(startDate) < Date.parse(value);//|| value == ""
       }
     );
 
@@ -175,19 +175,40 @@ app.validation = {
     $('#physical_form').validate({
       rules: {
         name: {
-          notNumber: true,
-          defis_only_symbol: true,
-          required: true
+          notNumber: {
+            param: true,
+            depends: fieldRequired,
+          },
+          defis_only_symbol: {
+            param: true,
+            depends: fieldRequired,
+          },
+          required: true,
+          //depends: fieldRequired
         },
         surname: {
-          notNumber: true,
-          defis_only_symbol: true,
-          required: true
+          notNumber: {
+            param: true,
+            depends: fieldRequired,
+          },
+          defis_only_symbol: {
+            param: true,
+            depends: fieldRequired,
+          },
+          required: true,
+          //depends: fieldRequired
         },
         patronymic: {
-          notNumber: true,
-          defis_only_symbol: true,
-          required: true
+          notNumber: {
+            param: true,
+            depends: fieldRequired,
+          },
+          defis_only_symbol: {
+            param: true,
+            depends: fieldRequired,
+          },
+          required: true,
+          //depends: fieldRequired
         },
         position: {
           notNumber: true,
@@ -195,23 +216,28 @@ app.validation = {
         },
         phone: {
           requiredphone: true,
-          minlenghtphone: true,
+          //minlenghtphone: true,
+          //depends: fieldRequired,
           /* requiredphone: {
-              param: true,
-              depends: phoneRequired,
-          },
+            param: true,
+            depends: fieldRequired,
+          }, */
           minlenghtphone: {
-              param: true,
-              depends: phoneRequired,
+            param: true,
+            depends: fieldRequired,
           },
-          required: {
+          /* required: {
               param: true,
               depends: phoneRequired,
           } */
         },
         email: {
-          emailfull: true,
-          required: true
+          emailfull: {
+            param: true,
+            depends: fieldRequired,
+          },
+          required: true,
+          //depends: fieldRequired
         },
         /* index: {
           number: true,
