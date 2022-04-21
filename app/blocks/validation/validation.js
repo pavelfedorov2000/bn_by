@@ -4,7 +4,7 @@ app.validation = {
   init() {
     // validation methods
     $.validator.addMethod("minlenghtphone", function (value, element) {
-      return value.replace(/\D+/g, '').length > 10;
+      return value.replace(/\D+/g, '').length == 12;
     });
     $.validator.addMethod("requiredphone", function (value, element) {
       return value.replace(/\D+/g, '').length > 0;
@@ -78,6 +78,7 @@ app.validation = {
       return result;
     }, '');
     $.validator.addMethod('not_symbols', function (value) {
+      //value = localStorage.getItem(key) || value;
       var result = true;
       var iChars = '!@#$%^&*()+=-[]\\\'`~;,./{}|":<>?"';
       for (var i = 0; i < value.length; i++) {

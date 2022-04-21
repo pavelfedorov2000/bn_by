@@ -8,6 +8,7 @@ $(document).ready(function () {
     }
   });
   app.validation.init();
+
   // Custom jquery select
   $('.select__title').on('click', function () {
     $(this).parents('.form__field').siblings().find('.select__title').removeClass('active');
@@ -75,22 +76,68 @@ $(document).ready(function () {
     }
   });
 
+  // $("body").on("change", ".input[name=phone]", function () {
+  //   console.log(this.value);
+  // });
+
+  $("body").on("keyup", ".input[name=phone]", function () {
+    disabled.call(this);
+  });
+
   // случай, когда заполняем на вкладке личные данные физ формы сначала все поля а телефон последним, чтобы кнопка загоралась зеленым
-  $('.input').on('change', function () {
-    //!$(this).parents('label').siblings().find('.input').hasClass('error')
-    if ($(this).parents('form').valid()) {
-      $('.next-btn').prop('disabled', false);
-    } else {
-      $('.next-btn').prop('disabled', true);
+  $('.input').on('input', function () {
+    //$('input[name=phone]').trigger('change');
+    //console.log($(this).val());
+    disabled.call(this);
+  });
+  function disabled() {
+    //console.log($(this).attr('name'));
+
+    $('.next-btn').prop('disabled', $(this).val() === '+375(__) ___-__-__' || !$(this).parents('form').valid());
+    //console.log($(this).val());
+
+    // if ($(this).attr('name') === 'phone') {
+
+    //   if (!$(this).parents('label').siblings().find('.input').hasClass('error')) {
+    //     if ($(this).val().length == 19) {
+    //       $('.next-btn').prop('disabled', false);
+    //     } else {
+    //       $('.next-btn').prop('disabled', true);
+    //     }
+    //   }
+    // } else {
+    //   if ($(this).parents('form').valid()) {
+    //     $('.next-btn').prop('disabled', false);
+    //   } else {
+    //     $('.next-btn').prop('disabled', true);
+    //   }
+    // }
+  }
+  $(document).on('mouseup', function () {
+    if ($('#physical_form').length > 0) {
+      if ($('#physical_form').valid()) {
+        $('.next-btn').prop('disabled', false);
+      } else {
+        $('.next-btn').prop('disabled', true);
+      }
     }
   });
-  $('.input[name=phone]').on('change', function () {
+  /* $('.input[name=phone]').on('change, input', function () {
     if (!$(this).parents('label').siblings().find('.input').hasClass('error')) {
       if ($(this).val().length == 19) {
         $('.next-btn').prop('disabled', false);
       } else {
         $('.next-btn').prop('disabled', true);
       }
+    }
+  }); */
+
+  $('.next-btn').on('click', function () {
+    if (!$('.form-page').valid()) {
+      $('.form__legend--drop').addClass('active');
+      $('.form__drop-items').slideDown();
+      $(this).prop('disabled', true);
+      $('html, body').animate({ scrollTop: $(".input.error").offset().top }, 500);
     }
   });
 
@@ -155,6 +202,7 @@ $(document).ready(function () {
       if ($('#physical_form').valid()) {
         nextStep(1);
       } else {
+        $('.next-btn').prop('disabled', true);
         return false;
       }
     } else {
@@ -181,35 +229,6 @@ $(document).ready(function () {
       }
     }
   }
-  navItems.forEach((btn, i) => {
-    btn.addEventListener('click', () => {
-      if ($('.form-page').valid()) {
-        navScroll(btn, i);
-        $('.form__nav-btn.active').removeClass('active');
-        btn.classList.add('active');
-        currentStep = localStorage.getItem('step') || 0;
-        stepItems[currentStep].style.display = "none";
-        stepText.forEach(text => {
-          text.querySelectorAll('div')[currentStep].style.display = "none";
-        });
-        currentStep = i;
-        showStep(i);
-        localStorage.setItem('step', currentStep);
-      } else {
-        return false;
-      }
-    });
-  });
-
-  /* stepItems[currentStep].querySelectorAll('.input').forEach(input => {
-    input.addEventListener('change', () => {
-      if (!$('.form-page').valid()) {
-        $('.next-btn').prop('disabled', true);
-      } else {
-        $('.next-btn').prop('disabled', false);
-      }
-    });
-  }); */
 
   window.addEventListener('resize', function () {
     if (currentStep == 0) {
@@ -221,68 +240,34 @@ $(document).ready(function () {
     }
   });
 
-  function showStep(n) {
-
-    $('.form__nav-btn.active').removeClass('active');
-    if (n < navItems.length) {
-      stepItems[n].style.display = "block";
-      stepText.forEach(text => {
-        text.querySelectorAll('div')[currentStep].style.display = "block";
-      });
-      navItems[n].classList.add('active');
-    }
-    if (n == 0) {
-      if ($(window).width() < 576) {
-        $('.next-btn').css('grid-column', '1 / 3');
-      }
-      backBtn.style.display = "none";
-    } else {
-      if ($(window).width() < 576) {
-        $('.next-btn').css('grid-column', '2 / 3');
-      }
-      backBtn.style.display = "block";
-    }
-
-    if (n == navItems.length - 1 && !$('input[name=agree]').is(':checked')) {
-      $('.next-btn').text('Готово');
-      $('.next-btn').prop('disabled', true);
-    } else {
-      $('.next-btn').text('Продолжить');
-      $('.next-btn').prop('disabled', false);
-    }
-
-    if (n == navItems.length) {
-      $('.steps').hide();
-      $('.form-result').fadeIn('300');
-      generateResult();
-    }
-  }
-
-  $('input[name=agree]').on('change', function () {
-    if ($(this).is(':checked')) {
-      if ($(this).parents('form').valid()) {
-        $('.next-btn').prop('disabled', false);
-      }
-      localStorage.setItem('agree', true);
-    } else {
-      $('.next-btn').prop('disabled', true);
-    }
-  });
-
   function nextStep(n) {
-    currentStep = localStorage.getItem('step') || 0;
-    stepItems[currentStep].style.display = "none";
-    stepText.forEach(text => {
-      text.querySelectorAll('div')[currentStep].style.display = "none";
-    });
-    currentStep = +currentStep + n;
-    localStorage.setItem('step', currentStep);
-    navScroll(document.querySelector('.form__nav-btn.active'), currentStep);
-    showStep(localStorage.getItem('step'));
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    if ($('.form-page').valid()) {
+      currentStep = localStorage.getItem('step') || 0;
+      stepItems[currentStep].style.display = "none";
+      stepText.forEach(text => {
+        text.querySelectorAll('div')[currentStep].style.display = "none";
+      });
+      currentStep = +currentStep + n;
+      localStorage.setItem('step', currentStep);
+      navScroll(document.querySelector('.form__nav-btn.active'), currentStep);
+      showStep(localStorage.getItem('step'));
+      /* window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      }); */
+      /* if (!$('#form-page').valid()) {
+        $('.form__legend--drop').addClass('active');
+        $('.form__drop-items').slideDown();
+        $('html, body').animate({ scrollTop: $(".input.error").offset().top }, 500);
+        $('.next-btn').prop('disabled', true);
+      } */
+      //$('html, body').animate({ scrollTop: 0 }, 500);
+    } else {
+      $('.form__legend--drop').addClass('active');
+      $('.form__drop-items').slideDown();
+      $('html, body').animate({ scrollTop: $(".input.error").offset().top }, 500);
+      $('.next-btn').prop('disabled', true);
+    }
   }
 
   function prevStep(n) {
@@ -299,7 +284,98 @@ $(document).ready(function () {
       top: 0,
       behavior: 'smooth'
     });
+    if (currentStep == 0 && $('#physical_form').length > 0) {
+      $('.next-btn').prop('disabled', false);
+    }
   }
+
+  function showStep(n) {
+
+    $('.form__nav-btn.active').removeClass('active');
+
+    if (n == navItems.length - 1 && !$('input[name=agree]').is(':checked')) {
+      $('.next-btn').text('Готово');
+      $('.next-btn').prop('disabled', true);
+    } else {
+      $('.next-btn').text('Продолжить');
+      $('.next-btn').prop('disabled', false);
+    }
+    if (n == 0) {
+      if ($(window).width() < 576) {
+        $('.next-btn').css('grid-column', '1 / 3');
+      }
+      backBtn.style.display = "none";
+      if ($('#physical_form').length > 0) {
+        $('.next-btn').prop('disabled', true);
+      }
+    } else {
+      if ($(window).width() < 576) {
+        $('.next-btn').css('grid-column', '2 / 3');
+      }
+      backBtn.style.display = "block";
+    }
+    if (n < navItems.length) {
+      stepItems[n].style.display = "block";
+      stepText.forEach(text => {
+        text.querySelectorAll('div')[currentStep].style.display = "block";
+      });
+      navItems[n].classList.add('active');
+    }
+
+    if (n == navItems.length) {
+      $('.steps').hide();
+      $('.form-result').fadeIn('300');
+      generateResult();
+    }
+  }
+
+  navItems.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+
+      if ($('.form-page').valid()) {
+        navScroll(btn, i);
+        $('.form__nav-btn.active').removeClass('active');
+        btn.classList.add('active');
+        currentStep = localStorage.getItem('step') || 0;
+        stepItems[currentStep].style.display = "none";
+        stepText.forEach(text => {
+          text.querySelectorAll('div')[currentStep].style.display = "none";
+        });
+        currentStep = i;
+        showStep(i);
+        localStorage.setItem('step', currentStep);
+      } else {
+        /* $('.form__legend--drop').addClass('active');
+        $('.form__drop-items').slideDown();
+        $('html, body').animate({ scrollTop: $(".input.error").offset().top }, 500);
+        $('.next-btn').prop('disabled', true); */
+        return false;
+      }
+
+      /* if (!$('#form-page').valid()) {
+        $('.form__legend--drop').addClass('active');
+        $('.form__drop-items').slideDown();
+        $('html, body').animate({ scrollTop: $(".input.error").offset().top }, 500);
+        $('.next-btn').prop('disabled', true);
+      } 
+      $('html, body').animate({ scrollTop: 0 }, 500); */
+
+      if (i == 0 && $('#physical_form').length > 0) {
+        $('.next-btn').prop('disabled', false);
+      }
+    });
+  });
+
+  $('input[name=agree]').on('change', function () {
+    if ($(this).is(':checked')) {
+      if ($(this).parents('form').valid()) {
+        $('.next-btn').prop('disabled', false);
+      }
+      localStorage.setItem('agree', true);
+    } else {
+      $('.next-btn').prop('disabled', true);
+    }
+  });
 
   // Редактировать
   $('.edit').on('click', function () {
@@ -314,23 +390,13 @@ $(document).ready(function () {
     data = JSON.parse(localStorage.getItem("data"));
   });
 
-  /* $('.next-btn').on('click', function () {
-    if ($(this).parents('form').attr('id') === 'physical_form') {
-      document.querySelector('#physical_form').querySelectorAll('.form__step')[0].querySelectorAll('.input').forEach(input => {
-        if (input.classList.contains('error')) {
-          $('.next-btn').prop('disabled', true);
-        }
-      });
-    }
-  }); */
-
 
   // Добавление данных в объект
   let data = JSON.parse(localStorage.getItem("data")) || {};
   let checks = [];
 
   function clickInput(target) {
-    $(`${target}`).on('change', function () {
+    $(`${target}`).on('change, keyup', function () {
       let stepName = $('.form__nav-btn.active').text();
       let stepSubcategory = $(this).parents('fieldset').find('legend').text().trim();
       let key, value;
@@ -803,6 +869,7 @@ $(document).ready(function () {
             $(`.form__label:contains(${key})`).next().find('.select__title').text(localStorage.getItem(key));
           }
           $(`.form__label:contains(${key})`).next().val(localStorage.getItem(key));
+          $(`.form__legend:contains(${key})`).next().find('label.form__check').find('input.check-box').prop('checked', true);
           //$(`.form__label:contains(${key})`).next().find('.radio-box').prop('checked', localStorage.getItem(key));
           $(`.form__label:contains(${key})`).next().next().find('.check-box').prop('checked', localStorage.getItem(key));
 
