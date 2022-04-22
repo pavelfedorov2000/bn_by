@@ -160,15 +160,22 @@ app.validation = {
         responsible_position: {
           notNumber: true,
         },
-        corpus: {
-          number: true,
-        },
         room: {
           not_symbols: true,
         },
-        home: {
+        juridical_home: {
           not_symbols: true,
           russian: true,
+        },
+        juridical_corpus: {
+          number: true,
+        },
+        mailing_home: {
+          not_symbols: true,
+          russian: true,
+        },
+        mailing_corpus: {
+          number: true,
         },
       },
     });
@@ -267,14 +274,14 @@ app.validation = {
           //date: true,
           dateDECH: {
             param: true,
-            depends: dateRequired,
+            //depends: dateRequired,
           },
         },
         passport_to: {
           //date: true,
           dateDECH: {
             param: true,
-            depends: dateRequired,
+            //depends: dateRequired,
           },
           greaterThan: {
             param: true,
@@ -284,15 +291,15 @@ app.validation = {
         passport_identification_number: {
           cyrillic: true,
         },
-        corpus: {
-          number: true,
-        },
         room: {
           not_symbols: true,
         },
         home: {
           not_symbols: true,
           russian: true,
+        },
+        corpus: {
+          number: true,
         },
       },
     });
