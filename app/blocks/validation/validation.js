@@ -150,18 +150,35 @@ app.validation = {
         },
         responsible_name: {
           notNumber: true,
+          defis_only_symbol: true,
         },
         responsible_surname: {
           notNumber: true,
+          defis_only_symbol: true,
         },
         responsible_patronymic: {
           notNumber: true,
+          defis_only_symbol: true,
         },
         responsible_position: {
           notNumber: true,
+          defis_only_symbol: true,
         },
-        room: {
+        connection_room: {
           not_symbols: true,
+        },
+        juridical_room: {
+          not_symbols: true,
+        },
+        mailing_room: {
+          not_symbols: true,
+        },
+        connection_home: {
+          not_symbols: true,
+          russian: true,
+        },
+        connection_corpus: {
+          number: true,
         },
         juridical_home: {
           not_symbols: true,
@@ -291,14 +308,24 @@ app.validation = {
         passport_identification_number: {
           cyrillic: true,
         },
-        room: {
+        connection_room: {
           not_symbols: true,
         },
-        home: {
+        connection_home: {
           not_symbols: true,
           russian: true,
         },
-        corpus: {
+        connection_corpus: {
+          number: true,
+        },
+        register_room: {
+          not_symbols: true,
+        },
+        register_home: {
+          not_symbols: true,
+          russian: true,
+        },
+        register_corpus: {
           number: true,
         },
       },
@@ -332,7 +359,7 @@ app.validation = {
     $("input[name=unp]").on('click', function () {
       $(this).setCursorPosition(0);
     }).mask("999999999");
-    $("input[name=index]").on('click', function () {
+    $("input[data-input=index]").on('click', function () {
       $(this).setCursorPosition(0);
     }).mask("999999");
   },

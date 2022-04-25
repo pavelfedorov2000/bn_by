@@ -84,11 +84,11 @@
 		<div class="form__passport-fields">
 			<label>
 				<div class="form__label">Серия</div>
-				<input class="input" name="passport_series" placeholder="HB">
+				<input id="passport_series" class="input" name="passport_series" placeholder="HB">
 			</label>
 			<label>
 				<div class="form__label">Номер паспорта</div>
-				<input class="input" name="passport_num" placeholder="2024468">
+				<input id="passport_num" class="input" name="passport_num" placeholder="2024468">
 			</label>
 		</div>
 		<label class="form__field">
@@ -101,11 +101,11 @@
 		</label>
 		<label class="form__field">
 			<div class="form__label">Идентификационный номер</div>
-			<input class="input" name="passport_identification_number">
+			<input id="passport_identification_number" class="input" name="passport_identification_number">
 		</label>
 		<label class="form__field">
 			<div class="form__label">Кем выдан паспорт</div>
-			<input class="input" name="passport_issued_by" placeholder="Октябрьским РОВД">
+			<input id="passport_issued_by" class="input" name="passport_issued_by" placeholder="Октябрьским РОВД">
 		</label>
 	</fieldset>
 	<fieldset class="form__fieldset register-address">
@@ -114,7 +114,7 @@
 		</legend>
 		<div class="form__drop-items">
 			<label class="form__check form__check--align-center">
-				<input class="check-box" type="checkbox" name="matches_address">
+				<input class="check-box matches-address" type="checkbox" name="register_matches-address">
 				<span class="check-style"></span>
 				<span class="check-content">
 					Совпадает с адресом подключения
@@ -123,7 +123,7 @@
 			<div class="form__hidden-items">
 				<label class="form__field">
 					<div class="form__label">Индекс</div>
-					<input class="input" name="index">
+					<input data-input="index" class="input" name="register_index">
 				</label>
 				<label class="form__field">
 					<div class="form__label">Область</div>
@@ -268,7 +268,7 @@
 						</div>
 					</div>
 					<label class="form__check form__check--align-center">
-						<input class="check-box" type="checkbox" name="missing_street">
+						<input class="check-box missing-street" type="checkbox" name="register_missing-street">
 						<span class="check-style"></span>
 						<span class="check-content">
 							В адресе отсутствует название улицы
@@ -278,11 +278,11 @@
 				<div class="form__fields">
 					<label>
 						<div class="form__label">Дом</div>
-						<input class="input" name="home" placeholder="51В">
+						<input class="input" name="register_home" placeholder="51В">
 					</label>
 					<label>
 						<div class="form__label">Корпус / Строение</div>
-						<input class="input" name="corpus" placeholder="1">
+						<input class="input" name="register_corpus" placeholder="1">
 					</label>
 				</div>
 				<label class="form__field">
@@ -314,9 +314,9 @@
 				</label>
 				<label class="form__field">
 					<div class="form__label">Помещение</div>
-					<input class="input" name="room" placeholder="196">
+					<input id="physical_room" class="input" name="register_room" placeholder="196">
 					<label class="form__check form__check--align-center">
-						<input class="check-box" type="checkbox" name="single_structure">
+						<input class="check-box single-structure" type="checkbox" name="register_single-structure">
 						<span class="check-style"></span>
 						<span class="check-content">
 							Это единое строение, помещения нет

@@ -4,7 +4,7 @@
 	</legend>
 	<div class="form__drop-items">
 		<label class="form__check form__check--align-center">
-			<input class="check-box" type="checkbox" name="matches_address">
+			<input class="check-box matches-address" type="checkbox" name="juridical_matches-address">
 			<span class="check-style"></span>
 			<span class="check-content">
 				Совпадает с адресом подключения
@@ -13,7 +13,7 @@
 		<div class="form__hidden-items">
 			<label class="form__field">
 				<div class="form__label">Индекс</div>
-				<input class="input" name="index">
+				<input data-input="index" class="input" name="juridical_index">
 			</label>
 			<label class="form__field">
 				<div class="form__label">Область</div>
@@ -149,8 +149,8 @@
 						</div>
 					</div>
 				</div>
-				<label class="form__check form__check--align-center">
-					<input class="check-box" type="checkbox" name="missing_street">
+				<label class="form__check form__check--align-center missing-street">
+					<input class="check-box missing-street" type="checkbox" name="juridical_missing-street">
 					<span class="check-style"></span>
 					<span class="check-content">
 						В адресе отсутствует название улицы
@@ -195,9 +195,9 @@
 			</label>
 			<label class="form__field">
 				<div class="form__label">Помещение</div>
-				<input class="input" name="room" placeholder="196">
+				<input class="input" name="juridical_room" placeholder="196">
 				<label class="form__check form__check--align-center">
-					<input class="check-box" type="checkbox" name="single_structure">
+					<input class="check-box single-structure" type="checkbox" name="juridical_single-structure">
 					<span class="check-style"></span>
 					<span class="check-content">
 						Это единое строение, помещения нет
