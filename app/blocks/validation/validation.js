@@ -50,12 +50,19 @@ app.validation = {
         return this.optional(element) || check;
       }
     );
-    $.validator.addMethod("greaterThan",
+    $.validator.addMethod("lessThan",
       function (value, element, params) {
-        var startDate = $('.input[name=passport_from').val();
-        return Date.parse(startDate) < Date.parse(value);//|| value == ""
+        var endDate = $('.input[name=passport_to').val().split('.').reverse().join('/');
+        return new Date(endDate) > new Date(value.split('.').reverse().join('/'));//|| value == ""
       }
     );
+    $.validator.addMethod("greaterThan",
+      function (value, element, params) {
+        var startDate = $('.input[name=passport_from').val().split('.').reverse().join('/');
+        return new Date(startDate) < new Date(value.split('.').reverse().join('/'));//|| value == ""
+      }
+    );
+
 
     $.validator.addMethod('cyrillic', function (value) {
       var result = true;
@@ -291,14 +298,18 @@ app.validation = {
           //date: true,
           dateDECH: {
             param: true,
-            //depends: dateRequired,
+            depends: dateRequired,
+          },
+          lessThan: {
+            param: true,
+            depends: dateRequired,
           },
         },
         passport_to: {
           //date: true,
           dateDECH: {
             param: true,
-            //depends: dateRequired,
+            depends: dateRequired,
           },
           greaterThan: {
             param: true,

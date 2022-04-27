@@ -76,19 +76,14 @@ $(document).ready(function () {
     }
   });
 
-  // $("body").on("change", ".input[name=phone]", function () {
-  //   console.log(this.value);
-  // });
-
-  $("body").on("keyup", ".input[name=phone]", function () {
-    disabled.call(this);
-  });
-
   // случай, когда заполняем на вкладке личные данные физ формы сначала все поля а телефон последним, чтобы кнопка загоралась зеленым
-  $('.input').on('input', function () {
+  $('.input').on('keyup input', function () {
     disabled.call(this);
     if (currentStep == 0) {
       disabled.call(this);
+      if ($('#physical_form').length && $('#physical_form').valid()) {
+        localStorage.setItem('personal-data', 'valid');
+      }
     } else if (currentStep == navItems.length - 1) {
       if (!$('input[name=agree]').is(':checked') || !$(this).parents('form').valid()) {
         $('.next-btn').prop('disabled', true);
@@ -104,24 +99,15 @@ $(document).ready(function () {
     }
   });
   function disabled() {
-    $('.next-btn').prop('disabled', $(this).val() === '+375(__) ___-__-__' || !$(this).parents('form').valid());
+    $('.next-btn').prop('disabled', !$(this).parents('form').valid());
   }
-  /* $(document).on('mouseup', function () {
-    if ($('#physical_form').length > 0) {
-      if ($('#physical_form').valid()) {
-        $('.next-btn').prop('disabled', false);
-      } else {
-        $('.next-btn').prop('disabled', true);
-      }
-    }
-  }); */
 
   // Поле почтовый адрес совпадает с
   $('input[name=mailing_address_matches]').on('change', function () {
     if ($('input[name=mailing_address_matches]:checked').next().find('span').text() === 'Выберите') {
-      $('input[name=mailing_address_matches]:checked').parents('label').next().slideDown();
+      $('input[name=mailing_address_matches]:checked').parents('.form__field').next().slideDown();
     } else {
-      $('input[name=mailing_address_matches]:checked').parents('label').next().slideUp();
+      $('input[name=mailing_address_matches]:checked').parents('.form__field').next().slideUp();
     }
   });
 
@@ -149,16 +135,34 @@ $(document).ready(function () {
     $(this).next().slideToggle('300');
   });
 
-  /* $('.input').on('change', function () {
-    if (!$(this).parents('form').valid() && !$('input[name=agree]').is(':checked')) {
-      $('.next-btn').prop('disabled', true);
-    } else {
-      $('.next-btn').prop('disabled', false);
+  function getStep() {
+    if ($('#juridical_form').length) {
+      currentStep = localStorage.getItem('jf-step') || 0;
     }
-  }); */
-
-  let currentStep = localStorage.getItem('step') || 0;
-  localStorage.setItem('step', currentStep);
+    if ($('#physical_form').length) {
+      currentStep = localStorage.getItem('ff-step') || 0;
+    }
+    stepItems[currentStep].style.display = "none";
+    stepText.forEach(text => {
+      text.querySelectorAll('div')[currentStep].style.display = "none";
+    });
+  }
+  function setStep() {
+    if ($('#juridical_form').length) {
+      localStorage.setItem('jf-step', currentStep);
+    }
+    if ($('#physical_form').length) {
+      localStorage.setItem('ff-step', currentStep);
+    }
+  }
+  let currentStep;
+  if ($('#juridical_form').length) {
+    currentStep = localStorage.getItem('jf-step') || 0;
+  }
+  if ($('#physical_form').length) {
+    currentStep = localStorage.getItem('ff-step') || 0;
+  }
+  setStep();
   const navItems = document.querySelectorAll('.form__nav-btn');
   const stepItems = document.querySelectorAll('.form__step');
   const stepText = document.querySelectorAll('.form-page__aside-text');
@@ -223,33 +227,20 @@ $(document).ready(function () {
   // фукция перехода на следующий шаг
   function nextStep(n) {
     if ($('.form-page').valid()) {
-      currentStep = localStorage.getItem('step') || 0;
-      stepItems[currentStep].style.display = "none";
-      stepText.forEach(text => {
-        text.querySelectorAll('div')[currentStep].style.display = "none";
-      });
+      getStep();
       currentStep = +currentStep + n;
-      localStorage.setItem('step', currentStep);
+      setStep();
       navScroll(document.querySelector('.form__nav-btn.active'), currentStep);
-      showStep(localStorage.getItem('step'));
-      /* window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      }); */
-      //$('html, body').animate({ scrollTop: 0 }, 500);
+      showStep(currentStep);
     }
   }
 
   // фукция перехода на предыдущий шаг
   function prevStep(n) {
-    currentStep = localStorage.getItem('step');
-    stepItems[currentStep].style.display = "none";
-    stepText.forEach(text => {
-      text.querySelectorAll('div')[currentStep].style.display = "none";
-    });
+    getStep();
     currentStep = currentStep - n;
-    localStorage.setItem('step', currentStep);
-    showStep(localStorage.getItem('step'));
+    setStep();
+    showStep(currentStep);
     navScroll(document.querySelector('.form__nav-btn.active'), currentStep);
     window.scrollTo({
       top: 0,
@@ -263,18 +254,13 @@ $(document).ready(function () {
   // фукция отображения шага
   function showStep(n) {
     $('.form__nav-btn.active').removeClass('active');
-    if (n != 0) {
+    /* if (n != 0) {
       $('.form__legend--drop').addClass('active');
       $('.form__drop-items').slideDown();
       $(this).prop('disabled', true);
       if (!$('.form-page').valid()) {
         $('html, body').animate({ scrollTop: $(".input.error").offset().top }, 500);
       }
-    }
-    /* if (!$('input[name=agree]').is(':checked')) {
-      $('.next-btn').prop('disabled', true);
-    } else {
-      $('.next-btn').prop('disabled', false);
     } */
     if (n == navItems.length - 1 && !$('input[name=agree]').is(':checked')) {
       $('.next-btn').text('Готово');
@@ -288,7 +274,7 @@ $(document).ready(function () {
         $('.next-btn').css('grid-column', '1 / 3');
       }
       backBtn.style.display = "none";
-      if ($('#physical_form').length > 0) {
+      if ($('#physical_form').length > 0 && localStorage.getItem('personal-data') !== 'valid') {
         $('.next-btn').prop('disabled', true);
       }
     } else {
@@ -319,23 +305,13 @@ $(document).ready(function () {
         navScroll(btn, i);
         $('.form__nav-btn.active').removeClass('active');
         btn.classList.add('active');
-        currentStep = localStorage.getItem('step') || 0;
-        stepItems[currentStep].style.display = "none";
-        stepText.forEach(text => {
-          text.querySelectorAll('div')[currentStep].style.display = "none";
-        });
+        getStep();
         currentStep = i;
         showStep(i);
-        localStorage.setItem('step', currentStep);
+        setStep();
       } else {
         return false;
       }
-
-      /* if (!$('input[name=agree]').is(':checked') || $('.input').hasClass('error')) {
-        $('.next-btn').prop('disabled', true);
-      } else {
-        $('.next-btn').prop('disabled', false);
-      } */
 
       if (i == 0 && $('#physical_form').length > 0) {
         $('.next-btn').prop('disabled', false);
@@ -371,10 +347,6 @@ $(document).ready(function () {
       $(this).attr('id', `${$(this).attr('name')}-false`);
     }
   });
-  //$('.radio-box[name=resident]').first().attr('id', `${$(this).attr('name')}-yes`);
-  //$('.radio-box[name=resident]').last().attr('id', `${$(this).attr('name')}-no`);
-  //$('.radio-box[name=temporary_registration]').first().attr('id', `${$(this).attr('name')}-yes`);
-  //$('.radio-box[name=temporary_registration]').last().attr('id', `${$(this).attr('name')}-no`);
 
   // Чекбокс согласия с персональными данными
   $('input[name=agree]').on('change', function () {
@@ -394,7 +366,7 @@ $(document).ready(function () {
     $('.form-result__content').empty(); // чистим контент, чтобы корректно работало
     $('.steps').show(); // показываем шаги
     currentStep = 0; // устанавливаем шаг в начальное значение
-    localStorage.setItem('step', currentStep);
+    setStep();
     showStep(currentStep); // показываем первый шаг
     navScroll(document.querySelector('.form__nav-btn.active'), currentStep);
     $('input[name=agree]').prop('checked', false); // убираем галочку с поля согласия с обработкой персональных данных
@@ -406,14 +378,6 @@ $(document).ready(function () {
   // Добавление данных в объект
   let data = JSON.parse(localStorage.getItem("data")) || {};
   let checks = [];
-  /* let checks = $('.check-box[name=additional_service]:checked').length == 0 ? [] : pushChecks();
-  console.log($('.check-box[name=additional_service]:checked'));
-  function pushChecks() {
-    $('.check-box[name=additional_service]:checked').each(function () {
-      checks.push(`${$(this).next().next().children().first().text()}: ${$(this).next().next().children().last().text()}`);
-    });
-  }
-  console.log(checks); */
 
   function clickInput(target) {
     $(`${target}`).on('change', function () {
@@ -447,6 +411,11 @@ $(document).ready(function () {
         if ($(this).val() == '') {
           delete data[stepName][stepSubcategory][key];
         }
+        //console.log($(this).parents('.form__fieldset').children().first().text().trim());
+        /* if (typeof data[stepName][stepSubcategory][$(this).parents('.form__fieldset').children().first().text().trim()] !== "undefined") {
+          delete data[stepName][stepSubcategory][$(this).parents('.form__fieldset').children().first().text().trim()];
+          //localStorage.removeItem($(this).parents('.form__fieldset').children().first().text().trim());
+        } */
       }
 
       if (target === '.select__input') {
@@ -458,6 +427,9 @@ $(document).ready(function () {
         } else {
           key = $(this).parents('.select').prev().text().trim();
         }
+
+        $(this).parents('.select').find('.select__input').prop('checked', false);
+        $(this).prop('checked', true);
 
         // tariff
         if ($(this).next().children().length == 2) {
@@ -542,24 +514,27 @@ $(document).ready(function () {
           [key]: value,
         };
 
+        var $nationality = $('.select__input[name=nationality]').first();
         // Гражданство
         if ($(this).attr('name') === 'resident' && $(this).next().text() === 'Да') {
           delete data[stepName][stepSubcategory]["Гражданство"];
           delete data[stepName][stepSubcategory]["Есть ли у вас временная регистрация?"];
           $('.radio-box[name=temporary_registration]').prop('checked', false);
           $('.select__input[name=nationality]:checked').prop('checked', false);
-          $('.select__input[name=nationality]').first().prop('checked', true);
-          $('.select__input[name=nationality]').first().parent().parent().prev().removeClass('active');
-          $('.select__input[name=nationality]').first().parent().parent().prev().text('Выберите гражданство');
+          $nationality.prop('checked', true);
+          $nationality.parent().parent().prev().removeClass('active');
+          $nationality.parent().parent().prev().text('Выберите гражданство');
         }
         // Адрес регистрации
         if ($(this).attr('name') === 'temporary_registration' && $(this).next().text() === 'Нет') {
           delete data[stepName]["Адрес регистрации"];
           $('.register-address .select').each(function () {
-            $(this).find('.select__input').prop('checked', false);
-            $(this).find('.select__input').first().prop('checked', true);
-            $(this).find('.select__input').first().parent().parent().prev().removeClass('active');
-            $(this).find('.select__input').first().parent().parent().prev().text($(this).find('.select__input').first().next().text());
+            var $selectInput = $(this).find('.select__input');
+            var $firstSelectInput = $selectInput.first();
+            $selectInput.prop('checked', false);
+            $firstSelectInput.prop('checked', true);
+            $firstSelectInput.parent().parent().prev().removeClass('active');
+            $firstSelectInput.parent().parent().prev().text($(this).find('.select__input').first().next().text());
           });
         }
       }
@@ -569,20 +544,14 @@ $(document).ready(function () {
         storageKey = $(this).attr('id');
         value = `${$(this).next().next().children().first().text()}: ${$(this).next().next().children().last().text()}`;
 
-        //let str = `${$('.check-box[name=additional_service]:checked').next().next().children().first().text()}: ${$('.check-box:checked').next().next().children().last().text()}`;
-
-        console.log($('.check-box[name=additional_service]:checked'));
-
         checks = [...checks];
         if ($(this).is(':checked')) {
           checks.push(value);
-          //localStorage.setItem(value.split(':')[0], true);
-          //localStorage.setItem(`${$(this).parents('form').attr('id').split('_')[0]}_${$(this).attr('name')}s`, checks);
-          localStorage.setItem(`${$(this).attr('name')}s`, [...checks]);
+          localStorage.setItem(`${$(this).attr('name')}s`, JSON.stringify(checks));
           localStorage.setItem(storageKey, true);
         } else {
           checks.splice(checks.indexOf(value), 1);
-          localStorage.setItem(`${$(this).attr('name')}s`, [...checks]);
+          localStorage.setItem(`${$(this).attr('name')}s`, JSON.stringify(checks));
           localStorage.removeItem(storageKey);
         }
 
@@ -605,14 +574,16 @@ $(document).ready(function () {
 
       if (target === '.missing-street, .single-structure') {
         key = $(this).parent().prev().prev().text();
-        //key = `${$(this).parents('.form__fieldset').children().first().text()} ${$(this).parent().prev().prev().text()}`;
         storageKey = $(this).attr('id');
-        //console.log(storageKey);
         value = $(this).next().next().text().trim();
-        //localStorage.setItem(`bn-${key}`, value);
         localStorage.setItem(storageKey, value);
 
         if ($(this).is(':checked')) {
+          var $selectTitle = $(this).parent().prev().find('.select__title');
+          $selectTitle.removeClass('active');
+          $selectTitle.text($(this).parent().prev().find('.select__content-inner').children().first().next().text());
+          $(this).parent().prev().find('.select__input:checked').prop('checked', false);
+          $(this).parent().prev().find('.select__content-inner').children().first().prop('checked', true);
 
           if ($(this).prev().val() !== '') {
             $(this).prev().val('');
@@ -629,7 +600,8 @@ $(document).ready(function () {
             [key]: value,
           };
         } else {
-          localStorage.removeItem($(this).parent().prev().prev().text());
+          localStorage.removeItem(storageKey);
+          delete data[stepName][stepSubcategory][key];
         }
       }
 
@@ -641,7 +613,6 @@ $(document).ready(function () {
         localStorage.setItem(storageKey, value);
 
         if ($(this).is(':checked')) {
-          //delete data[stepName];
           $(this).parent().next().find('.select').each(function () {
             $(this).find('.select__input').prop('checked', false);
             $(this).find('.select__input').first().prop('checked', true);
@@ -668,21 +639,7 @@ $(document).ready(function () {
             data[stepName][stepSubcategory] = {
               [key]: value,
             };
-          } /* else {
-            data[stepName][stepSubcategory] = {
-              ...data[stepName][stepSubcategory],
-              [key]: value,
-            };
-          } */
-          /* data = {
-            ...data,
           }
-
-          data[stepName] = {
-            ...data[stepName],
-            id: Number(currentStep)
-          };
-          delete data[stepName][stepSubcategory]; */
         } else {
           delete data[stepName][stepSubcategory];
         }
@@ -701,7 +658,7 @@ $(document).ready(function () {
   clickInput('.check-box[name="additional_service"]');
   clickInput('.matches-address');
 
-  $('.select__input[name=street').on('change', function () {
+  $('.select__input[name=street]').on('change', function () {
     $(this).parents('.select').next().children().first().prop('checked', false);
   });
 
@@ -719,27 +676,24 @@ $(document).ready(function () {
     if (window.localStorage) {
       for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
-        console.log(key);
         if (key) {
-          /* let dt = $(`#${key}`).next().next().children().first().text();
-          let dd = $(`#${key}`).next().next().children().last().text();
-          let check = `${dt}: ${dd}`;
-          checks.push(check);
-          console.log(checks); */
-
           //$(`.check-title:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
           $(`.check-content:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
           //$(`.check-box:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
           //$(`.radio-style:contains(${localStorage.getItem(key)})`).prev().prop('checked', true);
-          $(`.form__label:contains(${key})`).next().find('.select__title').addClass('active');
-          if ($(`.form__label:contains(${key})`).next().find('.select__title').children().length > 1) {
-            $(`.form__label:contains(${key})`).next().find('.select__title').children().first().text(localStorage.getItem(key).split(':')[0]);
-            $(`.form__label:contains(${key})`).next().find('.select__title').children().last().text(localStorage.getItem(key).split(':')[1]);
+          var $title = $(`.form__label:contains(${key})`).next().find('.select__title');
+          var $titleChildren = $title.children()
+          $title.addClass('active');
+          if ($titleChildren.length > 1) {
+            $titleChildren.first().text(localStorage.getItem(key).split(':')[0]);
+            $titleChildren.last().text(localStorage.getItem(key).split(':')[1]);
           } else {
-            $(`.form__label:contains(${key})`).next().find('.select__title').text(localStorage.getItem(key));
+            $title.text(localStorage.getItem(key));
           }
+          $(`.form__legend:contains(${key})`).next().find('.select__title').text(localStorage.getItem(key));
           //$(`.form__label:contains(${key})`).next().val(localStorage.getItem(key));
           $(`#${key}.input`).val(localStorage.getItem(key));
+
           $(`.form__legend:contains(${key})`).next().children().first().find('input.check-box').prop('checked', true);
           /* let keyArr = key.split(' ');
           let label = keyArr[keyArr.length - 1];
@@ -766,33 +720,81 @@ $(document).ready(function () {
           if ($('.select__label').attr('data-value') === localStorage.getItem(key)) {
             $(this).prev().prop('checked', true);
           }
-          //$('.radio-box').prop('checked', false);
+
           $(`#${key}`).prop('checked', localStorage.getItem(key));
-          console.log(key);
-          //localStorage["additional_services"]
           if (localStorage["additional_services"] && checks.length == 0) {
-            checks.push(...localStorage.getItem('additional_services').split('.,'));
+            checks = JSON.parse(localStorage.getItem("additional_services"));
           }
-          console.log(checks);
-          //$('.radio-box').prop('checked', false);
-          //$(`#${key}-${localStorage.getItem(key)}.radio-box`).prop('checked', localStorage.getItem(key));
-          /* if (localStorage.getItem(key) === true) {
-            $(`.radio-style[name=${key}]:contains(Да)`).prop('checked', localStorage.getItem(key));
-          }
-          if (localStorage.getItem(key) === false) {
-            $(`.radio-style[name=${key}]:contains(Нет)`).prop('checked', localStorage.getItem(key));
-          } */
         }
+      }
+
+      var $ff = $('#physical_form');
+      if ($ff && $ff.length && data) {
+        var validator = $ff.validate();
+        if (data["Личные данные"]) {
+          $ff.validate().form();
+          console.log(1);
+          $('.next-btn').prop('disabled', !$ff.valid());
+        }
+        if (data["Заказ"] && data["Заказ"]["Адрес подключения"]) {
+          $('.next-btn').prop('disabled', $ff.valid());
+          $('.form__legend--drop:contains(Адрес подключения)').addClass('active');
+          $('.form__legend--drop:contains(Адрес подключения)').next().show();
+          validator.element(".input[name=connection_room]");
+          validator.element(".input[name=connection_home]");
+          validator.element(".input[name=connection_corpus]");
+        }
+        if (data["Паспортные данные"] && data["Паспортные данные"]["Адрес регистрации"]) {
+          var $name = 'register';
+          $('.next-btn').prop('disabled', $ff.valid());
+          $('.form__legend--drop:contains(Адрес регистрации)').addClass('active');
+          $('.form__legend--drop:contains(Адрес регистрации)').next().show();
+          validator.element(`.input[name=${$name}_room]`);
+          validator.element(`.input[name=${$name}_home]`);
+          validator.element(`.input[name=${$name}_corpus]`);
+        }
+      }
+
+      var $jf = $('#juridical_form');
+      if ($jf && $jf.length && data) {
+        var validator = $jf.validate();
+        $jf.validate().form();
+
+        if (data["Заказ"] && data["Заказ"]["Адрес подключения"]) {
+          $('.next-btn').prop('disabled', $jf.valid());
+          $('.form__legend--drop:contains(Адрес подключения)').addClass('active');
+          $('.form__legend--drop:contains(Адрес подключения)').next().show();
+          validator.element(".input[name=connection_room]");
+          validator.element(".input[name=connection_home]");
+          validator.element(".input[name=connection_corpus]");
+        }
+        if (data["Реквизиты"]) {
+          $('.next-btn').prop('disabled', $jf.valid());
+          if (data["Реквизиты"]["Юридический адрес"]) {
+            $('.form__legend--drop:contains(Юридический адрес)').addClass('active');
+            $('.form__legend--drop:contains(Юридический адрес)').next().show();
+            validator.element(".input[name=juridical_room]");
+            validator.element(".input[name=juridical_home]");
+            validator.element(".input[name=juridical_corpus]");
+          }
+          if (data["Реквизиты"]["Почтовый адрес"]) {
+            $('.form__legend--drop:contains(Почтовый адрес)').addClass('active');
+            $('.form__legend--drop:contains(Почтовый адрес)').next().show();
+            validator.element(".input[name=mailing_room]");
+            validator.element(".input[name=mailing_home]");
+            validator.element(".input[name=mailing_corpus]");
+          }
+        }
+        /* else {
+          $('.form__legend--drop').removeClass('active');
+          $('.form__legend--drop').next().hide();
+        } */
       }
     }
   }
   getStorageValues();
 
   $('.check-box:checked').parents('.form__field').find('.input').val('');
-
-  /* if ($('.matches-address').is(':checked')) {
-    $(this).parent().next().hide();
-  } */
 
   // Логика радиокнопок Да / Нет
   if ($('.radio-box[name=resident]:checked').next().text() === 'Нет') {
@@ -880,12 +882,17 @@ $(document).ready(function () {
     $('.overlay').fadeOut('slow'); // прячем подложку
     $('.steps').show(); // показываем степы
     currentStep = 0; // возвращаемся на нулевой шаг
+    setStep();
     showStep(currentStep); // показываем нулевой шаг
     navScroll(document.querySelector('.form__nav-btn.active'), currentStep);
     $('.select__title').removeClass('active'); // убираем bold у заголовка селекта
     $('.form__legend--drop').removeClass('active');
+    $('.form__drop-items').hide();
     $('.select__input:checked').prop('checked', false);
-    $('.form__hidden-items').show();
+    checks = [];
+    $('.radio-box').each(function () {
+      $(this).prop('checked', false);
+    });
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
