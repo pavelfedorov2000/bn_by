@@ -23,9 +23,6 @@ app.validation = {
     function dateRequired() {
       return $('.input[name=passport_from]').val().length > 0 && $('.input[name=passport_to]').val().length > 0;
     }
-    /* function phoneRequired() {
-        return $('.input[name=phone]').val().length > 1;
-    } */
 
     $.validator.addMethod(
       "dateDECH",
@@ -53,13 +50,13 @@ app.validation = {
     $.validator.addMethod("lessThan",
       function (value, element, params) {
         var endDate = $('.input[name=passport_to').val().split('.').reverse().join('/');
-        return new Date(endDate) > new Date(value.split('.').reverse().join('/'));//|| value == ""
+        return new Date(endDate) > new Date(value.split('.').reverse().join('/'));
       }
     );
     $.validator.addMethod("greaterThan",
       function (value, element, params) {
         var startDate = $('.input[name=passport_from').val().split('.').reverse().join('/');
-        return new Date(startDate) < new Date(value.split('.').reverse().join('/'));//|| value == ""
+        return new Date(startDate) < new Date(value.split('.').reverse().join('/'));
       }
     );
 
@@ -127,27 +124,9 @@ app.validation = {
           notNumber: true,
           defis_only_symbol: true,
         },
-        phone: {
-          //requiredphone: true,
-          //minlenghtphone: true,
-          /* requiredphone: true,
-          minlenghtphone: {
-              param: true,
-              depends: phoneRequired,
-          }, */
-        },
         email: {
           emailfull: true,
         },
-        /* index: {
-          number: true,
-          rangelength: [6, 6]
-        }, */
-        /* unp: {
-          number: true,
-          rangelength: [9, 9],
-          depends: fieldRequired
-        }, */
         bic: {
           rangelength: [8, 11],
           cyrillic: true,
@@ -216,7 +195,6 @@ app.validation = {
             depends: fieldRequired,
           },
           required: true,
-          //depends: fieldRequired
         },
         surname: {
           notNumber: {
@@ -228,7 +206,6 @@ app.validation = {
             depends: fieldRequired,
           },
           required: true,
-          //depends: fieldRequired
         },
         patronymic: {
           notNumber: {
@@ -240,7 +217,6 @@ app.validation = {
             depends: fieldRequired,
           },
           required: true,
-          //depends: fieldRequired
         },
         position: {
           notNumber: true,
@@ -248,20 +224,10 @@ app.validation = {
         },
         phone: {
           requiredphone: true,
-          //minlenghtphone: true,
-          //depends: fieldRequired,
-          /* requiredphone: {
-            param: true,
-            depends: fieldRequired,
-          }, */
           minlenghtphone: {
             param: true,
             depends: fieldRequired,
           },
-          /* required: {
-              param: true,
-              depends: phoneRequired,
-          } */
         },
         email: {
           emailfull: {
@@ -269,16 +235,7 @@ app.validation = {
             depends: fieldRequired,
           },
           required: true,
-          //depends: fieldRequired
         },
-        /* index: {
-          number: true,
-          rangelength: [6, 6]
-        },
-        unp: {
-          number: true,
-          rangelength: [9, 9]
-        }, */
         bic: {
           rangelength: [8, 11],
           cyrillic: true,
@@ -295,7 +252,6 @@ app.validation = {
           not_symbols: true,
         },
         passport_from: {
-          //date: true,
           dateDECH: {
             param: true,
             depends: dateRequired,
@@ -306,7 +262,6 @@ app.validation = {
           },
         },
         passport_to: {
-          //date: true,
           dateDECH: {
             param: true,
             depends: dateRequired,

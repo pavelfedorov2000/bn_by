@@ -254,14 +254,6 @@ $(document).ready(function () {
   // фукция отображения шага
   function showStep(n) {
     $('.form__nav-btn.active').removeClass('active');
-    /* if (n != 0) {
-      $('.form__legend--drop').addClass('active');
-      $('.form__drop-items').slideDown();
-      $(this).prop('disabled', true);
-      if (!$('.form-page').valid()) {
-        $('html, body').animate({ scrollTop: $(".input.error").offset().top }, 500);
-      }
-    } */
     if (n == navItems.length - 1 && !$('input[name=agree]').is(':checked')) {
       $('.next-btn').text('Готово');
       $('.next-btn').prop('disabled', true);
@@ -354,8 +346,9 @@ $(document).ready(function () {
       if ($(this).parents('form').valid()) {
         $('.next-btn').prop('disabled', false);
       }
-      localStorage.setItem('agree', true);
+      localStorage.setItem('agree', 'true');
     } else {
+      localStorage.setItem('agree', 'false');
       $('.next-btn').prop('disabled', true);
     }
   });
@@ -370,14 +363,27 @@ $(document).ready(function () {
     showStep(currentStep); // показываем первый шаг
     navScroll(document.querySelector('.form__nav-btn.active'), currentStep);
     $('input[name=agree]').prop('checked', false); // убираем галочку с поля согласия с обработкой персональных данных
-    data = JSON.parse(localStorage.getItem("data"));
+    if ($('#juridical_form').length) {
+      data = JSON.parse(localStorage.getItem("jf-data"));
+    }
+    if ($('#physical_form').length) {
+      data = JSON.parse(localStorage.getItem("ff-data"));
+    }
     $('#physical_form .next-btn').prop('disabled', false);
   });
 
 
   // Добавление данных в объект
-  let data = JSON.parse(localStorage.getItem("data")) || {};
-  let checks = [];
+  let data;
+  if ($('#juridical_form').length) {
+    data = JSON.parse(localStorage.getItem("jf-data")) || {};
+  }
+  if ($('#physical_form').length) {
+    data = JSON.parse(localStorage.getItem("ff-data")) || {};
+
+  }
+  let juridical_checks = [];
+  let physical_checks = [];
 
   function clickInput(target) {
     $(`${target}`).on('change', function () {
@@ -386,11 +392,6 @@ $(document).ready(function () {
       let key, storageKey, value;
 
       if (target === '.input') {
-        /* if ($(this).attr('name') === 'responsible_surname') {
-          key = `${$(this).prev().text()} ответственного`;
-        } else {
-          key = $(this).prev().text();
-        } */
         key = $(this).prev().text();
         storageKey = $(this).attr('id');
         value = $(this).val();
@@ -411,11 +412,6 @@ $(document).ready(function () {
         if ($(this).val() == '') {
           delete data[stepName][stepSubcategory][key];
         }
-        //console.log($(this).parents('.form__fieldset').children().first().text().trim());
-        /* if (typeof data[stepName][stepSubcategory][$(this).parents('.form__fieldset').children().first().text().trim()] !== "undefined") {
-          delete data[stepName][stepSubcategory][$(this).parents('.form__fieldset').children().first().text().trim()];
-          //localStorage.removeItem($(this).parents('.form__fieldset').children().first().text().trim());
-        } */
       }
 
       if (target === '.select__input') {
@@ -487,16 +483,10 @@ $(document).ready(function () {
         storageKey = $(this).attr('id');
         if ($(this).next().text() === 'Да') {
           localStorage.removeItem($(this).parent().next().find('.radio-box').attr('id'));
-          //$(this).parent().next().find('.radio-box').prop('checked', false);
-          //value = true;
         } else {
           localStorage.removeItem($(this).parent().prev().find('.radio-box').attr('id'));
-          //$(this).parent().prev().find('.radio-box').prop('checked', false);
-          //value = false;
         }
         value = $(this).next().text();
-        //let storageVal = $(this).next().text() === 'Да' ? true : false;
-        //console.log(storageVal);
         if (storageKey) {
           localStorage.setItem(storageKey, value);
         }
@@ -540,35 +530,64 @@ $(document).ready(function () {
       }
 
       if (target === '.check-box[name="additional_service"]') {
+
         key = $(this).parents('.form__fieldset').children().first().text();
         storageKey = $(this).attr('id');
         value = `${$(this).next().next().children().first().text()}: ${$(this).next().next().children().last().text()}`;
 
-        checks = [...checks];
-        if ($(this).is(':checked')) {
-          checks.push(value);
-          localStorage.setItem(`${$(this).attr('name')}s`, JSON.stringify(checks));
-          localStorage.setItem(storageKey, true);
-        } else {
-          checks.splice(checks.indexOf(value), 1);
-          localStorage.setItem(`${$(this).attr('name')}s`, JSON.stringify(checks));
-          localStorage.removeItem(storageKey);
-        }
-
-
-        if (checks.length > 0) {
-          data = {
-            ...data,
+        if ($('#juridical_form').length) {
+          juridical_checks = [...juridical_checks];
+          if ($(this).is(':checked')) {
+            juridical_checks.push(value);
+            localStorage.setItem(`${$(this).parents('.form-page').attr('id').split('_')[0]}_${$(this).attr('name')}s`, JSON.stringify(juridical_checks));
+            localStorage.setItem(storageKey, true);
+          } else {
+            juridical_checks.splice(juridical_checks.indexOf(value), 1);
+            localStorage.setItem(`${$(this).parents('.form-page').attr('id').split('_')[0]}_${$(this).attr('name')}s`, JSON.stringify(juridical_checks));
+            localStorage.removeItem(storageKey);
           }
-          data[stepName] = {
-            ...data[stepName],
-            id: Number(currentStep)
-          };
-          data[stepName][stepSubcategory] = [
-            ...checks,
-          ];
-        } else {
-          delete data[stepName][stepSubcategory];
+
+          if (juridical_checks.length > 0) {
+            data = {
+              ...data,
+            }
+            data[stepName] = {
+              ...data[stepName],
+              id: Number(currentStep)
+            };
+            data[stepName][stepSubcategory] = [
+              ...juridical_checks,
+            ];
+          } else {
+            delete data[stepName][stepSubcategory];
+          }
+        }
+        if ($('#physical_form').length) {
+          physical_checks = [...physical_checks];
+          if ($(this).is(':checked')) {
+            physical_checks.push(value);
+            localStorage.setItem(`${$(this).parents('.form-page').attr('id').split('_')[0]}_${$(this).attr('name')}s`, JSON.stringify(physical_checks));
+            localStorage.setItem(storageKey, true);
+          } else {
+            physical_checks.splice(physical_checks.indexOf(value), 1);
+            localStorage.setItem(`${$(this).parents('.form-page').attr('id').split('_')[0]}_${$(this).attr('name')}s`, JSON.stringify(physical_checks));
+            localStorage.removeItem(storageKey);
+          }
+
+          if (physical_checks.length > 0) {
+            data = {
+              ...data,
+            }
+            data[stepName] = {
+              ...data[stepName],
+              id: Number(currentStep)
+            };
+            data[stepName][stepSubcategory] = [
+              ...physical_checks,
+            ];
+          } else {
+            delete data[stepName][stepSubcategory];
+          }
         }
       }
 
@@ -606,7 +625,6 @@ $(document).ready(function () {
       }
 
       if (target === '.matches-address') {
-        //console.log($(this));
         key = $(this).parent().parent().prev().text();
         storageKey = $(this).attr('id');
         value = $(this).next().next().text().trim();
@@ -645,18 +663,37 @@ $(document).ready(function () {
         }
       }
 
-      localStorage.setItem("data", JSON.stringify(data));
-      data = JSON.parse(localStorage.getItem("data"));
-      console.log(data);
+      if ($('#juridical_form').length) {
+        localStorage.setItem("jf-data", JSON.stringify(data));
+        data = JSON.parse(localStorage.getItem("jf-data"));
+        //console.log(data);
+      }
+      if ($('#physical_form').length) {
+        localStorage.setItem("ff-data", JSON.stringify(data));
+        data = JSON.parse(localStorage.getItem("ff-data"));
+        //console.log(data);
+      }
     });
   }
 
-  clickInput('.input');
-  clickInput('.select__input');
-  clickInput('.radio-box');
-  clickInput('.missing-street, .single-structure');
+  if ($('#juridical_form').length) {
+
+    clickInput('.input');
+    clickInput('.select__input');
+    clickInput('.radio-box');
+    clickInput('.missing-street, .single-structure');
+    clickInput('.matches-address');
+  }
+
+  if ($('#physical_form').length) {
+
+    clickInput('.input');
+    clickInput('.select__input');
+    clickInput('.radio-box');
+    clickInput('.missing-street, .single-structure');
+    clickInput('.matches-address');
+  }
   clickInput('.check-box[name="additional_service"]');
-  clickInput('.matches-address');
 
   $('.select__input[name=street]').on('change', function () {
     $(this).parents('.select').next().children().first().prop('checked', false);
@@ -677,10 +714,7 @@ $(document).ready(function () {
       for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
         if (key) {
-          //$(`.check-title:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
           $(`.check-content:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
-          //$(`.check-box:contains(${key})`).prev().prev().prop('checked', localStorage.getItem(key));
-          //$(`.radio-style:contains(${localStorage.getItem(key)})`).prev().prop('checked', true);
           var $title = $(`.form__label:contains(${key})`).next().find('.select__title');
           var $titleChildren = $title.children()
           $title.addClass('active');
@@ -691,104 +725,68 @@ $(document).ready(function () {
             $title.text(localStorage.getItem(key));
           }
           $(`.form__legend:contains(${key})`).next().find('.select__title').text(localStorage.getItem(key));
-          //$(`.form__label:contains(${key})`).next().val(localStorage.getItem(key));
           $(`#${key}.input`).val(localStorage.getItem(key));
 
           $(`.form__legend:contains(${key})`).next().children().first().find('input.check-box').prop('checked', true);
-          /* let keyArr = key.split(' ');
-          let label = keyArr[keyArr.length - 1];
-          console.log(label);
-          let legend = keyArr.splice(0, keyArr.indexOf(label));
-          console.log(legend.join(' ')); */
-          //let res = $(`.form__legend:contains(${legend})`).next().find('.form__label');
-          //$(`.form__legend:contains(${legend})`).next().find(`.form__label:contains(${label})`).next().next().find('.check-box').prop('checked', localStorage.getItem(key));
-          //$(`.form__label:contains(${key})`).next().next().find('.check-box').prop('checked', localStorage.getItem(key));
-          /* if ($('.check-box').attr('id') === key) {
-            console.log(true);
-            $(this).prop('checked', true);
-          } else {
-            console.log(false);
-          } */
-          //$(`.form__label:contains(${key})`).next().find(`.radio-style:contains(${localStorage.getItem(key)})`).prev().prop('checked', true);
-          //$(`.radio-box[name=${key}]`).prop('checked', localStorage.getItem(key));
-          /* if ($('.form__label').text() === key) {
-            $(this).next().next().find('.check-box').prop('checked', localStorage.getItem(key));
-          } */
-          /* if ($('.form__label').text() === label && $('.form__label').parents('.form__legend').text() === legend) {
-            $('.form__label').next().next().find('.check-box').prop('checked', localStorage.getItem(key));
-          } */
+          $(`input[name=agree]`).prop('checked', key === 'agree' && localStorage.getItem(key) === 'true');
           if ($('.select__label').attr('data-value') === localStorage.getItem(key)) {
             $(this).prev().prop('checked', true);
           }
 
           $(`#${key}`).prop('checked', localStorage.getItem(key));
-          if (localStorage["additional_services"] && checks.length == 0) {
-            checks = JSON.parse(localStorage.getItem("additional_services"));
+          if (localStorage["juridical_additional_services"] && juridical_checks.length == 0) {
+            juridical_checks = JSON.parse(localStorage.getItem("juridical_additional_services"));
+          }
+          if (localStorage["physical_additional_services"] && physical_checks.length == 0) {
+            physical_checks = JSON.parse(localStorage.getItem("physical_additional_services"));
           }
         }
       }
 
+      function showFields(text) {
+        $(`.form__legend--drop:contains(${text})`).addClass('active').next().show();
+      }
+
       var $ff = $('#physical_form');
       if ($ff && $ff.length && data) {
-        var validator = $ff.validate();
         if (data["Личные данные"]) {
           $ff.validate().form();
-          console.log(1);
           $('.next-btn').prop('disabled', !$ff.valid());
         }
-        if (data["Заказ"] && data["Заказ"]["Адрес подключения"]) {
-          $('.next-btn').prop('disabled', $ff.valid());
-          $('.form__legend--drop:contains(Адрес подключения)').addClass('active');
-          $('.form__legend--drop:contains(Адрес подключения)').next().show();
-          validator.element(".input[name=connection_room]");
-          validator.element(".input[name=connection_home]");
-          validator.element(".input[name=connection_corpus]");
-        }
-        if (data["Паспортные данные"] && data["Паспортные данные"]["Адрес регистрации"]) {
-          var $name = 'register';
-          $('.next-btn').prop('disabled', $ff.valid());
-          $('.form__legend--drop:contains(Адрес регистрации)').addClass('active');
-          $('.form__legend--drop:contains(Адрес регистрации)').next().show();
-          validator.element(`.input[name=${$name}_room]`);
-          validator.element(`.input[name=${$name}_home]`);
-          validator.element(`.input[name=${$name}_corpus]`);
+
+        if (data["Заказ"] || data["Паспортные данные"]) {
+          if (data["Заказ"] && data["Заказ"]["Адрес подключения"]) {
+            showFields('Адрес подключения');
+          }
+          if (data["Паспортные данные"] && data["Паспортные данные"]["Адрес регистрации"]) {
+            showFields('Адрес регистрации');
+          }
+
+          $ff.validate().form();
+
+          var cond = (currentStep == navItems.length - 1 && !$('input[name=agree]').is(':checked')) || !$ff.valid();
+
+          $('.next-btn').prop('disabled', cond);
         }
       }
 
       var $jf = $('#juridical_form');
       if ($jf && $jf.length && data) {
-        var validator = $jf.validate();
+        if (data["Заказ"] && data["Заказ"]["Адрес подключения"]) {
+          showFields('Адрес подключения');
+        }
+        if (data["Реквизиты"] && data["Реквизиты"]["Юридический адрес"]) {
+          showFields('Юридический адрес');
+        }
+        if (data["Реквизиты"] && data["Реквизиты"]["Почтовый адрес"]) {
+          showFields('Почтовый адрес');
+        }
+
         $jf.validate().form();
 
-        if (data["Заказ"] && data["Заказ"]["Адрес подключения"]) {
-          $('.next-btn').prop('disabled', $jf.valid());
-          $('.form__legend--drop:contains(Адрес подключения)').addClass('active');
-          $('.form__legend--drop:contains(Адрес подключения)').next().show();
-          validator.element(".input[name=connection_room]");
-          validator.element(".input[name=connection_home]");
-          validator.element(".input[name=connection_corpus]");
-        }
-        if (data["Реквизиты"]) {
-          $('.next-btn').prop('disabled', $jf.valid());
-          if (data["Реквизиты"]["Юридический адрес"]) {
-            $('.form__legend--drop:contains(Юридический адрес)').addClass('active');
-            $('.form__legend--drop:contains(Юридический адрес)').next().show();
-            validator.element(".input[name=juridical_room]");
-            validator.element(".input[name=juridical_home]");
-            validator.element(".input[name=juridical_corpus]");
-          }
-          if (data["Реквизиты"]["Почтовый адрес"]) {
-            $('.form__legend--drop:contains(Почтовый адрес)').addClass('active');
-            $('.form__legend--drop:contains(Почтовый адрес)').next().show();
-            validator.element(".input[name=mailing_room]");
-            validator.element(".input[name=mailing_home]");
-            validator.element(".input[name=mailing_corpus]");
-          }
-        }
-        /* else {
-          $('.form__legend--drop').removeClass('active');
-          $('.form__legend--drop').next().hide();
-        } */
+        var cond = (currentStep == navItems.length - 1 && !$('input[name=agree]').is(':checked')) || !$jf.valid();
+
+        $('.next-btn').prop('disabled', cond);
       }
     }
   }
@@ -819,7 +817,12 @@ $(document).ready(function () {
 
   // функция генерации результирующего блока с введенными данными
   function generateResult() {
-    data = JSON.parse(localStorage.getItem("data"));
+    if ($('#juridical_form').length) {
+      data = JSON.parse(localStorage.getItem("jf-data"));
+    }
+    if ($('#physical_form').length) {
+      data = JSON.parse(localStorage.getItem("ff-data"));
+    }
 
     // сортируем, чтобы разделы выводились в порядке следования шагов а не в порядке их заполнения
     let sorted = Object.entries(data).sort((a, b) => a[1].id - b[1].id);
@@ -889,7 +892,8 @@ $(document).ready(function () {
     $('.form__legend--drop').removeClass('active');
     $('.form__drop-items').hide();
     $('.select__input:checked').prop('checked', false);
-    checks = [];
+    juridical_checks = [];
+    physical_checks = [];
     $('.radio-box').each(function () {
       $(this).prop('checked', false);
     });
